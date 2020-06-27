@@ -23,7 +23,7 @@ public class Accidente {
     private LocalTime hora;
 
     /** Dirección en la que ocurrió el {@link Accidente} */
-    private Direccion direccion;
+    private String direccion;
 
     /**
      * Qué estaba haciendo el trabajador al momento o justo antes del
@@ -95,10 +95,9 @@ public class Accidente {
     }
 
     /**
-     * @return información de la {@link Direccion} donde ocurrió el
-     *         {@link Accidente}
+     * @return dirección donde ocurrió el {@link Accidente}
      */
-    public Direccion getDireccion() {
+    public String getDireccion() {
         return direccion;
     }
 
@@ -200,9 +199,9 @@ public class Accidente {
     }
 
     /**
-     * @param direccion la {@link Direccion} a establecer
+     * @param direccion dirección a establecer
      */
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
