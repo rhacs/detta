@@ -22,8 +22,8 @@ public class Trabajador {
     /** Apellido materno del {@link Trabajador} */
     private String apellidoMaterno;
 
-    /** {@link Direccion} del {@link Trabajador} */
-    private Direccion direccion;
+    /** Dirección del {@link Trabajador} */
+    private String direccion;
 
     /** Teléfono de contacto del {@link Trabajador} */
     private String telefono;
@@ -72,7 +72,7 @@ public class Trabajador {
      * @param profesion       profesión
      * @param tipoContrato    tipo de contrato
      */
-    public Trabajador(int id, String nombres, String apellidoPaterno, String apellidoMaterno, Direccion direccion,
+    public Trabajador(int id, String nombres, String apellidoPaterno, String apellidoMaterno, String direccion,
             String telefono, String run, EGenero genero, LocalDate fechaNacimiento, String nacionalidad,
             String profesion, ETipoContrato tipoContrato) {
         this.id = id;
@@ -121,9 +121,9 @@ public class Trabajador {
     }
 
     /**
-     * @return la información de la {@link Direccion} del {@link Trabajador}
+     * @return la dirección del {@link Trabajador}
      */
-    public Direccion getDireccion() {
+    public String getDireccion() {
         return direccion;
     }
 
@@ -208,9 +208,9 @@ public class Trabajador {
     }
 
     /**
-     * @param direccion la {@link Direccion} a establecer
+     * @param direccion la dirección a establecer
      */
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 

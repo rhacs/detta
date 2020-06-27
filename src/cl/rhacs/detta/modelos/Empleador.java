@@ -18,7 +18,7 @@ public class Empleador {
     private String rut;
 
     /** {@link Direccion} del {@link Empleador} */
-    private Direccion direccion;
+    private String direccion;
 
     /** Teléfono de contacto del {@link Empleador} */
     private String telefono;
@@ -58,7 +58,7 @@ public class Empleador {
      * @param propiedad          si es pública o privada
      * @param tipoEmpresa        tipo de empresa
      */
-    public Empleador(int id, String nombre, String rut, Direccion direccion, String telefono, String actividadEcononica,
+    public Empleador(int id, String nombre, String rut, String direccion, String telefono, String actividadEcononica,
             int trabajadores, EPropiedad propiedad, ETipoEmpresa tipoEmpresa) {
         this.id = id;
         this.nombre = nombre;
@@ -96,9 +96,9 @@ public class Empleador {
     }
 
     /**
-     * @return la {@link Direccion} del {@link Empleador}
+     * @return la dirección del {@link Empleador}
      */
-    public Direccion getDireccion() {
+    public String getDireccion() {
         return direccion;
     }
 
@@ -164,7 +164,7 @@ public class Empleador {
     /**
      * @param direccion la dirección a establecer
      */
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
