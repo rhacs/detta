@@ -7,7 +7,3 @@ Este repositorio contiene el desarrollo del ejercicio evolutivo de **Accidentabi
 ### Java
 * [JSTL v1.2](https://mvnrepository.com/artifact/jstl/jstl)
 * [Oracle JDBC Driver](https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html)
-
-### JavaScript
-* [jQuery v3.5.1](https://code.jquery.com)
-* [FontAwesome v5.13.1](https://fontawesome.com)
