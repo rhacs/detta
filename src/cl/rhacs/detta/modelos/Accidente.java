@@ -1,7 +1,6 @@
 package cl.rhacs.detta.modelos;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import cl.rhacs.detta.modelos.enums.EClasificacion;
@@ -25,6 +24,9 @@ public class Accidente {
     /** Dirección en la que ocurrió el {@link Accidente} */
     private String direccion;
 
+    /** Comuna en donde ocurrió el {@link Accidente} */
+    private String comuna;
+
     /**
      * Qué estaba haciendo el trabajador al momento o justo antes del
      * {@link Accidente}
@@ -46,28 +48,14 @@ public class Accidente {
     /** Medio de Prueba para el {@link Accidente} */
     private EPrueba medioPrueba;
 
-    /** Información del {@link Empleador} */
-    private Empleador empleador;
-
-    /** Información del {@link Trabajador} */
-    private Trabajador trabajador;
-
-    /** Fecha en la cual el {@link Accidente} fue agregado a la base de datos */
-    private LocalDateTime creado;
-
-    /** Última fecha en la cual el {@link Accidente} fue actualizado */
-    private LocalDateTime actualizado;
-
     // Constructores
     // -----------------------------------------------------------------------------------------
 
     /**
-     * Crea una nueva instancia del objeto {@link Accidente} con los valores de
-     * fecha de creación y fecha de actualización inicializados
+     * Crea una nueva instancia vacía del objeto {@link Accidente}
      */
     public Accidente() {
-        creado = LocalDateTime.now();
-        actualizado = creado;
+
     }
 
     // Getters
@@ -99,6 +87,13 @@ public class Accidente {
      */
     public String getDireccion() {
         return direccion;
+    }
+
+    /**
+     * @return comuna en donde ocurrió el {@link Accidente}
+     */
+    public String getComuna() {
+        return comuna;
     }
 
     /**
@@ -144,36 +139,6 @@ public class Accidente {
         return medioPrueba.getPrueba();
     }
 
-    /**
-     * @return información sobre el {@link Empleador}
-     */
-    public Empleador getEmpleador() {
-        return empleador;
-    }
-
-    /**
-     * @return información sobre el {@link Trabajador} al que le ocurrió el
-     *         {@link Accidente}
-     */
-    public Trabajador getTrabajador() {
-        return trabajador;
-    }
-
-    /**
-     * @return tiempo exacto en el que el reporte del {@link Accidente} fue creado
-     */
-    public LocalDateTime getCreado() {
-        return creado;
-    }
-
-    /**
-     * @return tiempo exacto en el que el reporte del {@link Accidente} fue
-     *         modificado por última vez
-     */
-    public LocalDateTime getActualizado() {
-        return actualizado;
-    }
-
     // Setters
     // -----------------------------------------------------------------------------------------
 
@@ -203,6 +168,13 @@ public class Accidente {
      */
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    /**
+     * @param comuna comuna a establecer
+     */
+    public void setComuna(String comuna) {
+        this.comuna = comuna;
     }
 
     /**
@@ -247,20 +219,6 @@ public class Accidente {
         this.medioPrueba = medioPrueba;
     }
 
-    /**
-     * @param empleador el {@link Empleador} a establecer
-     */
-    public void setEmpleador(Empleador empleador) {
-        this.empleador = empleador;
-    }
-
-    /**
-     * @param trabajador el {@link Trabajador} a establecer
-     */
-    public void setTrabajador(Trabajador trabajador) {
-        this.trabajador = trabajador;
-    }
-
     // Herencias (Objeto)
     // -----------------------------------------------------------------------------------------
 
@@ -295,11 +253,9 @@ public class Accidente {
 
     @Override
     public String toString() {
-        return "Accidente [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", direccion=" + direccion
-                + ", circunstancia=" + circunstancia + ", lugar=" + lugar + ", detalles=" + detalles
-                + ", clasificacion=" + clasificacion + ", tipo=" + tipo + ", medioPrueba=" + medioPrueba
-                + ", empleador=" + empleador + ", trabajador=" + trabajador + ", creado=" + creado + ", actualizado="
-                + actualizado + "]";
+        return "Accidente [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", direccion=" + direccion + ", comuna="
+                + comuna + ", circunstancia=" + circunstancia + ", lugar=" + lugar + ", detalles=" + detalles
+                + ", clasificacion=" + clasificacion + ", tipo=" + tipo + ", medioPrueba=" + medioPrueba + "]";
     }
 
 }
