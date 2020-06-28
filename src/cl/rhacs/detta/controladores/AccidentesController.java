@@ -1,7 +1,8 @@
 package cl.rhacs.detta.controladores;
 
 import java.io.IOException;
-import javax.servlet.ServletConfig;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,6 +61,36 @@ public class AccidentesController extends HttpServlet {
     }
 
     /**
+     * Muestra todos los registros contenidos en el repositorio
+     * 
+     * @param request  objeto {@link HttpServletRequest} con la información de la
+     *                 solicitud del cliente al {@link HttpServlet}
+     * @param response objeto {@link HttpServletResponse} con la respuesta que le
+     *                 envía el {@link HttpServlet} al cliente
+     */
+    private void mostrarTodos(HttpServletRequest request, HttpServletResponse response) {
+        // Buscar todos los registros
+        List<Object> accidentes = repositorio.buscarTodos();
+        // Agregar el listado a los atributos de la solicitud
+        request.setAttribute("accidentes", accidentes);
+
+        // Mostrar contenido correspondiente
+        try {
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            // Recuperar el mensaje de error
+            String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
+
+            // Mostrar error
+            System.err.println("ERROR AccidentesController#mostrarTodos()");
+            System.err.println(" [!] " + mensaje);
+        }
+    }
+
+    // Solicitudes
+    // -----------------------------------------------------------------------------------------
+
+    /**
      * Maneja las solicitudes GET al {@link HttpServlet}
      * 
      * @param request  un objeto {@link HttpServletRequest} que contiene la
@@ -74,7 +105,12 @@ public class AccidentesController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        // Verificar que la solicitud contenga la acción a realizar
+        if (request.getParameterMap().containsKey("do")) {
+
+        } else {
+            mostrarTodos(request, response);
+        }
     }
 
     /**
