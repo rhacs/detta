@@ -156,7 +156,7 @@ public class AccidentesRepository implements IRepository {
         if (con != null) {
             // Preparar consulta
             String sql = "SELECT id, fecha, hora, direccion, comuna, circunstancia, lugar, detalles,"
-                    + " clasificacion, tipo, medio_prueba FROM accidentes";
+                    + " clasificacion, tipo, medio_prueba FROM accidentes ORDER BY id DESC";
 
             try {
                 // Preparar consulta
