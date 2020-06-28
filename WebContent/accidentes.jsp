@@ -44,7 +44,7 @@
                                     <td>${accidente.getTipo()}</td>
                                     <td class="text-right text-nowrap">
                                         <button type="button" class="btn btn-sm btn-outline-warning"  data-do="ver" data-id="${accidente.getId()}" title="Ver Detalles"><i class="fas fa-search"></i></button>
-                                        <button type="button" class="btn btn-sm btn-outline-success" data-do="editar" data-id="${accidente.getId()}" title="Editar"><i class="fas fa-edit"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-success" data-do="agregar" data-id="${accidente.getId()}" title="Editar"><i class="fas fa-edit"></i></button>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-do="borrar" data-id="${accidente.getId()}" title="Borrar"><i class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>
