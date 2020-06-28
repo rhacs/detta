@@ -1,6 +1,7 @@
 package cl.rhacs.detta.repositorios;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -136,7 +137,7 @@ public class AccidentesRepository implements IRepository {
             }
         } else {
             // No hubo conexión con la base de datos
-            System.err.println("No hubo conexión con la base de datos. Revise los registros.");
+            System.err.println(" [!] No hubo conexión con la base de datos.");
         }
 
         // Devolver falso si ocurrió algún error durante el proceso de inserción
@@ -184,7 +185,7 @@ public class AccidentesRepository implements IRepository {
             }
         } else {
             // No hubo conexion
-            System.err.println("No hubo conexión con la base de datos. Revise los registros.");
+            System.err.println(" [!] No hubo conexión con la base de datos. Revise los registros.");
         }
 
         // Devolver el listado
@@ -203,7 +204,7 @@ public class AccidentesRepository implements IRepository {
         if (con != null) {
             // Armar consulta
             String sql = "SELECT id, fecha, hora, direccion, comuna, circunstancia, lugar, detalles,"
-                    + " clasificacion, tipo, medio_prueba, FROM accidentes WHERE id = ? LIMIT 1";
+                    + " clasificacion, tipo, medio_prueba FROM accidentes WHERE id = ? LIMIT 1";
 
             try {
                 // Preparar consulta
@@ -225,7 +226,7 @@ public class AccidentesRepository implements IRepository {
                     conexion.desconectar();
                 } else {
                     // No hay resultados
-                    System.err.println("No existe el registro dentro de la tabla ACCIDENTES con ID = " + id);
+                    System.err.println(" [!] No existe el registro dentro de la tabla ACCIDENTES con ID = " + id);
                 }
             } catch (SQLException e) {
                 // Ocurrió un error
@@ -234,7 +235,7 @@ public class AccidentesRepository implements IRepository {
             }
         } else {
             // No hubo conexión
-            System.err.println("No hubo conexión con la base de datos. Revise los registros.");
+            System.err.println(" [!] No hubo conexión con la base de datos.");
         }
 
         return accidente;
@@ -242,11 +243,115 @@ public class AccidentesRepository implements IRepository {
 
     @Override
     public boolean actualizarRegistro(Object object) {
+        // Establecer conexión
+        Connection con = conexion.conectar();
+
+        // Verificar si hubo conexión
+        if (con != null) {
+            // Convertir objeto
+            Accidente accidente = (Accidente) object;
+
+            // Buscar accidente en la base de datos
+            Accidente aux = (Accidente) this.buscarPorID(accidente.getId());
+
+            // Verificar si existe el accidente
+            if (aux != null) {
+                // Armar consulta
+                String sql = "UPDATE accidentes SET fecha = ?, hora = ?, direccion = ?, comuna = ?"
+                        + ", circunstancia = ?, lugar = ?, detalles = ?, clasificacion = ?, "
+                        + "tipo = ?, medio_prueba = ? WHERE id = ?";
+
+                try {
+                    // Preparar consulta
+                    PreparedStatement ps = con.prepareStatement(sql);
+
+                    // Rellenar consulta
+                    ps.setDate(1, Date.valueOf(accidente.getFecha()));
+                    ps.setDate(2, Date.valueOf(accidente.getHora().format(DateTimeFormatter.ofPattern("HH:mm"))));
+                    ps.setString(3, accidente.getDireccion());
+                    ps.setString(4, accidente.getComuna());
+                    ps.setString(5, accidente.getCircunstancia());
+                    ps.setString(6, accidente.getLugar());
+                    ps.setString(7, accidente.getDetalles());
+                    ps.setString(8, accidente.getClasificacion());
+                    ps.setString(9, accidente.getTipo());
+                    ps.setString(10, accidente.getMedioPrueba());
+                    ps.setInt(11, aux.getId());
+
+                    // Ejecutar consulta
+                    boolean seModifico = ps.executeUpdate() > 0;
+
+                    // Cerrar consulta y conexión
+                    ps.close();
+                    conexion.desconectar();
+
+                    // Devolver resultado obtenido
+                    return seModifico;
+                } catch (SQLException e) {
+                    // Ocurrió un error
+                    System.err.println("ERROR AccidentesRepository#actualizarRegistro()");
+                    extraerExcepcion(e);
+                }
+            } else {
+                // No existe el registro
+                System.err.println(" [!] No existe el registro en la tabla ACCIDENTES con ID = " + accidente.getId());
+            }
+        } else {
+            // No hubo conexión
+            System.err.println(" [!] No hubo conexión con la base de datos");
+        }
+
         return false;
     }
 
     @Override
     public boolean eliminarRegistro(Object object) {
+        // Crear conexión
+        Connection con = conexion.conectar();
+
+        // Verificar si hay conexión
+        if (con != null) {
+            // Convertir objeto
+            Accidente accidente = (Accidente) object;
+
+            // Buscar registro
+            Accidente aux = (Accidente) this.buscarPorID(accidente.getId());
+
+            // Verificar si el registro existe
+            if (aux != null) {
+                // Armar consulta
+                String sql = "DELETE FROM accidentes WHERE id = ?";
+
+                try {
+                    // Preparar consulta
+                    PreparedStatement ps = con.prepareStatement(sql);
+
+                    // Insertar identificador
+                    ps.setInt(1, accidente.getId());
+
+                    // Ejecutar consulta
+                    boolean fueEliminado = ps.executeUpdate() > 0;
+
+                    // Cerrar consulta y conexión
+                    ps.close();
+                    conexion.desconectar();
+
+                    // Devolver valor obtenido
+                    return fueEliminado;
+                } catch (SQLException e) {
+                    // Ocurrió un error
+                    System.err.println("ERROR AccidentesRepository#eliminarRegistro()");
+                    extraerExcepcion(e);
+                }
+            } else {
+                // El registro no existe
+                System.err.println(" [!] No existe el registro en la tabla ACCIDENTES con ID = " + accidente.getId());
+            }
+        } else {
+            // No hubo conexión
+            System.err.println(" [!] No hubo conexión con la base de datos");
+        }
+
         return false;
     }
 
