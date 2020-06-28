@@ -11,7 +11,7 @@
         <div class="container mt-5 mb-5">
             <div class="row justify-content-center mb-2">
                 <div class="col-xl-8 col-lg-10 col-12 text-right">
-                    <button type="button" class="btn btn-sm btn-primary">Agregar Registro</button>
+                    <button type="button" data-do="agregar" class="btn btn-sm btn-primary">Agregar Registro</button>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -43,9 +43,9 @@
                                     <td>${accidente.getClasificacion()}</td>
                                     <td>${accidente.getTipo()}</td>
                                     <td class="text-right text-nowrap">
-                                        <button type="button" class="btn btn-sm btn-outline-warning"  data-detalles data-id="${accidente.getId()}" title="Ver Detalles"><i class="fas fa-search"></i></button>
-                                        <button type="button" class="btn btn-sm btn-outline-success" data-editar data-id="${accidente.getId()}" title="Editar"><i class="fas fa-edit"></i></button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-borrar data-id="${accidente.getId()}" title="Borrar"><i class="fas fa-trash"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-warning"  data-do="ver" data-id="${accidente.getId()}" title="Ver Detalles"><i class="fas fa-search"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-success" data-do="editar" data-id="${accidente.getId()}" title="Editar"><i class="fas fa-edit"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-do="borrar" data-id="${accidente.getId()}" title="Borrar"><i class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 </core:forEach>
@@ -57,6 +57,9 @@
         </div>
         <!-- /Contenido -->
         <jsp:include page="./parciales/dependencias.jsp" />
+        
+        <!-- Dependencias específicas -->
+        <script src="./res/js/accidentes.js"></script>
     </body>
     <!-- /Body -->
 </html>
