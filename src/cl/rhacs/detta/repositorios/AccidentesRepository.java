@@ -77,25 +77,16 @@ public class AccidentesRepository implements IRepository {
                 // Preparar la consulta
                 PreparedStatement statement = con.prepareStatement(sql);
 
-                // Agregar fecha
+                // Rellenar la consulta con los valores nuevos
                 statement.setString(1, accidente.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                // Agregar hora
                 statement.setString(2, accidente.getHora().format(DateTimeFormatter.ofPattern("HH:mm")));
-                // Agregar dirección
                 statement.setString(3, accidente.getDireccion());
-                // Agregar comuna
                 statement.setString(4, accidente.getComuna());
-                // Agregar circunstancia
                 statement.setString(5, accidente.getCircunstancia());
-                // Agregar lugar
                 statement.setString(6, accidente.getLugar());
-                // Agregar detalles
                 statement.setString(7, accidente.getDetalles());
-                // Agregar clasificacion
                 statement.setString(8, accidente.getClasificacion());
-                // Agregar tipo
                 statement.setString(9, accidente.getTipo());
-                // Agregar medio de prueba
                 statement.setString(10, accidente.getMedioPrueba());
 
                 // Verificar si el registro fue agregado
@@ -135,7 +126,7 @@ public class AccidentesRepository implements IRepository {
         // Verificar si hubo conexión
         if (con != null) {
             // Armar consulta
-            String sql = "SELECT id, fecha, hora, direccion, circunstancia, lugar, detalles,"
+            String sql = "SELECT id, fecha, hora, direccion, comuna, circunstancia, lugar, detalles,"
                     + " clasificacion, tipo, medio_prueba, empleador_id, trabajador_id, creado,"
                     + "actualizado FROM accidentes WHERE id = ? LIMIT 1";
 
@@ -159,12 +150,17 @@ public class AccidentesRepository implements IRepository {
                     accidente.setFecha(LocalDate.parse(resultado.getString("fecha")));
                     accidente.setHora(LocalTime.parse(resultado.getString("hora")));
                     accidente.setDireccion(resultado.getString("direccion"));
+                    accidente.setComuna(resultado.getString("comuna"));
                     accidente.setCircunstancia(resultado.getString("circunstancia"));
                     accidente.setLugar(resultado.getString("lugar"));
                     accidente.setDetalles(resultado.getString("detalles"));
                     accidente.setClasificacion(EClasificacion.valueOf(resultado.getString("clasificacion")));
                     accidente.setTipo(ETipo.valueOf(resultado.getString("tipo")));
                     accidente.setMedioPrueba(EPrueba.valueOf(resultado.getString("medio_prueba")));
+
+                    // Cerrar consulta y conexion
+                    statement.close();
+                    conexion.desconectar();
                 } else {
                     System.err.println("No existe el registro dentro de la tabla ACCIDENTES con ID = " + id);
                 }
