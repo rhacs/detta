@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -56,9 +54,41 @@ public class AccidentesRepository implements IRepository {
         String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
 
         // Mostrar error por consola
-        System.err.println("Código de error SQL: " + codigo);
-        System.err.println(mensaje);
+        System.err.println(" [!] Código de error SQL: " + codigo);
+        System.err.println(" [!] " + mensaje);
     }
+
+    /**
+     * Convierte un objeto {@link ResultSet} en un {@link Accidente}
+     * 
+     * @param resultSet objeto {@link ResultSet} con la información a extraer
+     * @return un objeto {@link Accidente}
+     */
+    private Accidente extraerAccidente(ResultSet resultSet) {
+        Accidente accidente = new Accidente();
+
+        try {
+            accidente.setId(resultSet.getInt("id"));
+            accidente.setFecha(resultSet.getDate("fecha").toLocalDate());
+            accidente.setHora(LocalTime.parse(resultSet.getDate("hora").toString()));
+            accidente.setDireccion(resultSet.getString("direccion"));
+            accidente.setComuna(resultSet.getString("comuna"));
+            accidente.setCircunstancia(resultSet.getString("circunstancia"));
+            accidente.setLugar(resultSet.getString("lugar"));
+            accidente.setDetalles(resultSet.getString("detalles"));
+            accidente.setClasificacion(EClasificacion.valueOf(resultSet.getString("clasificacion")));
+            accidente.setTipo(ETipo.valueOf(resultSet.getString("tipo")));
+            accidente.setMedioPrueba(EPrueba.valueOf(resultSet.getString("medio_prueba")));
+        } catch (SQLException e) {
+            System.err.println("ERROR: AccidentesRepository#extraerAccidente()");
+            extraerExcepcion(e);
+        }
+
+        return accidente;
+    }
+
+    // CRUD
+    // -----------------------------------------------------------------------------------------
 
     @Override
     public boolean insertarRegistro(Object object) {
@@ -100,6 +130,8 @@ public class AccidentesRepository implements IRepository {
                 // Devolver resultado
                 return fueAgregado;
             } catch (SQLException e) {
+                // Ocurrió un error
+                System.err.println("ERROR AccidentesRepository#insertarRegistro()");
                 extraerExcepcion(e);
             }
         } else {
@@ -137,26 +169,17 @@ public class AccidentesRepository implements IRepository {
                 // Recoger todos los resultados
                 while (rs.next()) {
                     // Crear objeto Accidente
-                    Accidente accidente = new Accidente();
-
-                    // Rellenar objeto
-                    accidente.setId(rs.getInt("id"));
-                    accidente.setFecha(rs.getDate("fecha").toLocalDate());
-                    accidente.setHora(LocalTime
-                            .parse(rs.getDate("hora").toLocalDate().format(DateTimeFormatter.ofPattern("HH:mm"))));
-                    accidente.setDireccion(rs.getString("direccion"));
-                    accidente.setComuna(rs.getString("comuna"));
-                    accidente.setCircunstancia(rs.getString("circunstancia"));
-                    accidente.setLugar(rs.getString("lugar"));
-                    accidente.setDetalles(rs.getString("detalles"));
-                    accidente.setClasificacion(EClasificacion.valueOf(rs.getString("clasificacion")));
-                    accidente.setTipo(ETipo.valueOf(rs.getString("tipo")));
-                    accidente.setMedioPrueba(EPrueba.valueOf(rs.getString("medio_prueba")));
-
-                    // Agregar accidente al listado
+                    Accidente accidente = extraerAccidente(rs);
+                    // Agregar objeto al listado
                     accidentes.add(accidente);
                 }
+
+                // Cerrar consulta y conexión
+                ps.close();
+                conexion.desconectar();
             } catch (SQLException e) {
+                // Ocurrió un error
+                System.err.println("ERROR AccidentesRepository#buscarTodos()");
                 extraerExcepcion(e);
             }
         } else {
@@ -195,28 +218,18 @@ public class AccidentesRepository implements IRepository {
                 // Verificar si hay resultados
                 if (resultado.next()) {
                     // Crear el objeto Accidente
-                    accidente = new Accidente();
-
-                    // Llenar el objeto con los valores del resultado
-                    accidente.setId(id);
-                    accidente.setFecha(LocalDate.parse(resultado.getString("fecha")));
-                    accidente.setHora(LocalTime.parse(resultado.getString("hora")));
-                    accidente.setDireccion(resultado.getString("direccion"));
-                    accidente.setComuna(resultado.getString("comuna"));
-                    accidente.setCircunstancia(resultado.getString("circunstancia"));
-                    accidente.setLugar(resultado.getString("lugar"));
-                    accidente.setDetalles(resultado.getString("detalles"));
-                    accidente.setClasificacion(EClasificacion.valueOf(resultado.getString("clasificacion")));
-                    accidente.setTipo(ETipo.valueOf(resultado.getString("tipo")));
-                    accidente.setMedioPrueba(EPrueba.valueOf(resultado.getString("medio_prueba")));
+                    accidente = extraerAccidente(resultado);
 
                     // Cerrar consulta y conexion
                     statement.close();
                     conexion.desconectar();
                 } else {
+                    // No hay resultados
                     System.err.println("No existe el registro dentro de la tabla ACCIDENTES con ID = " + id);
                 }
             } catch (SQLException e) {
+                // Ocurrió un error
+                System.err.println("ERROR AccidentesRepository#buscarPorID()");
                 extraerExcepcion(e);
             }
         } else {

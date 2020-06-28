@@ -56,8 +56,8 @@ public class ConexionDB {
         String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
 
         // Mostrar error por consola
-        System.err.println("Código de error SQL: " + codigo);
-        System.err.println(mensaje);
+        System.err.println(" [!] Código de error SQL: " + codigo);
+        System.err.println(" [!] " + mensaje);
     }
 
     /**
@@ -91,6 +91,8 @@ public class ConexionDB {
                 conexion = DriverManager.getConnection(url, username, password);
             }
         } catch (SQLException e) {
+            // Ocurrió un error
+            System.err.println("ERROR ConexionDB#conectar()");
             extraerExcepcion(e);
         }
 
@@ -111,6 +113,8 @@ public class ConexionDB {
                 conexion = null;
             }
         } catch (SQLException e) {
+            // Ocurrió un error
+            System.err.println("ERROR ConexionDB#desconectar()");
             extraerExcepcion(e);
         }
     }
