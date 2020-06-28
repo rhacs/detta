@@ -1,4 +1,4 @@
-    <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core"%>
     <!-- Head -->
     <head>
         <!-- Codificación de Caracteres -->
@@ -11,7 +11,8 @@
         <title>Detta <core:if test="${not empty titulo}"> - ${titulo}</core:if></title>
         
         <!-- Hojas de Estilo -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/estilo.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/responsividad.css">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha256-aAr2Zpq8MZ+YA/D6JtRD3xtrwpEz2IqOS+pWD/7XKIw=" crossorigin="anonymous" />
     </head>
     <!-- /Head -->
