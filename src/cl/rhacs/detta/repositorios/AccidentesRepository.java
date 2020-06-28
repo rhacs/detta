@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import cl.rhacs.detta.modelos.Accidente;
@@ -67,8 +69,7 @@ public class AccidentesRepository implements IRepository {
         if (con != null) {
             // Armar la consulta
             String sql = "INSERT INTO accidentes (fecha, hora, direccion, comuna, circunstancia,"
-                    + " lugar, detalles, clasificacion, tipo, medio_prueba, creado, actualizado)"
-                    + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + " lugar, detalles, clasificacion, tipo, medio_prueba) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             try {
                 // Convertir el objeto
@@ -112,7 +113,59 @@ public class AccidentesRepository implements IRepository {
 
     @Override
     public List<Object> buscarTodos() {
-        return null;
+        // Crear lista
+        List<Object> accidentes = null;
+
+        // Crear conexión con base de datos
+        Connection con = conexion.conectar();
+
+        // Verificar si hubo conexión
+        if (con != null) {
+            // Preparar consulta
+            String sql = "SELECT id, fecha, hora, direccion, comuna, circunstancia, lugar, detalles,"
+                    + " clasificacion, tipo, medio_prueba FROM accidentes";
+
+            try {
+                // Preparar consulta
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                // Ejecutar consulta
+                ResultSet rs = ps.executeQuery();
+
+                accidentes = new ArrayList<>();
+
+                // Recoger todos los resultados
+                while (rs.next()) {
+                    // Crear objeto Accidente
+                    Accidente accidente = new Accidente();
+
+                    // Rellenar objeto
+                    accidente.setId(rs.getInt("id"));
+                    accidente.setFecha(rs.getDate("fecha").toLocalDate());
+                    accidente.setHora(LocalTime
+                            .parse(rs.getDate("hora").toLocalDate().format(DateTimeFormatter.ofPattern("HH:mm"))));
+                    accidente.setDireccion(rs.getString("direccion"));
+                    accidente.setComuna(rs.getString("comuna"));
+                    accidente.setCircunstancia(rs.getString("circunstancia"));
+                    accidente.setLugar(rs.getString("lugar"));
+                    accidente.setDetalles(rs.getString("detalles"));
+                    accidente.setClasificacion(EClasificacion.valueOf(rs.getString("clasificacion")));
+                    accidente.setTipo(ETipo.valueOf(rs.getString("tipo")));
+                    accidente.setMedioPrueba(EPrueba.valueOf(rs.getString("medio_prueba")));
+
+                    // Agregar accidente al listado
+                    accidentes.add(accidente);
+                }
+            } catch (SQLException e) {
+                extraerExcepcion(e);
+            }
+        } else {
+            // No hubo conexion
+            System.err.println("No hubo conexión con la base de datos. Revise los registros.");
+        }
+
+        // Devolver el listado
+        return accidentes;
     }
 
     @Override
@@ -127,8 +180,7 @@ public class AccidentesRepository implements IRepository {
         if (con != null) {
             // Armar consulta
             String sql = "SELECT id, fecha, hora, direccion, comuna, circunstancia, lugar, detalles,"
-                    + " clasificacion, tipo, medio_prueba, empleador_id, trabajador_id, creado,"
-                    + "actualizado FROM accidentes WHERE id = ? LIMIT 1";
+                    + " clasificacion, tipo, medio_prueba, FROM accidentes WHERE id = ? LIMIT 1";
 
             try {
                 // Preparar consulta
