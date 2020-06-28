@@ -71,7 +71,7 @@ public class AccidentesRepository implements IRepository {
         try {
             accidente.setId(resultSet.getInt("id"));
             accidente.setFecha(resultSet.getDate("fecha").toLocalDate());
-            accidente.setHora(LocalTime.parse(resultSet.getDate("hora").toString()));
+            accidente.setHora(LocalTime.parse(resultSet.getString("hora"), DateTimeFormatter.ofPattern("HH:mm")));
             accidente.setDireccion(resultSet.getString("direccion"));
             accidente.setComuna(resultSet.getString("comuna"));
             accidente.setCircunstancia(resultSet.getString("circunstancia"));
