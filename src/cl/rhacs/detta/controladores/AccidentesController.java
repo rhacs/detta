@@ -110,7 +110,26 @@ public class AccidentesController extends HttpServlet {
             throws ServletException, IOException {
         // Verificar que la solicitud contenga la acción a realizar
         if (request.getParameterMap().containsKey("do")) {
+            // Recuperar acción
+            String accion = request.getParameter("do");
 
+            if (accion.equals("borrar")) {
+                // Eliminar un elemento
+                try {
+                    // Recuperar identificador del Accidente a eliminar
+                    int id = Integer.parseInt(request.getParameter("id"));
+
+                    // Eliminar un registro de la base de datos
+                    repositorio.eliminarRegistro(id);
+                } catch (NumberFormatException e) {
+                    // Ocurrió un error al intentar convertir el id a un número
+                    System.err.println("ERROR AccidentesController#doGet()");
+                    System.err.println(" [!] " + e.getMessage());
+                }
+
+                // Redirigir al usuario al listado de accidentes
+                response.sendRedirect(request.getContextPath() + "/accidentes");
+            }
         } else {
             mostrarTodos(request, response);
         }
