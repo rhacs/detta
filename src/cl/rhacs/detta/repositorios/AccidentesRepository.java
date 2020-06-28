@@ -185,7 +185,7 @@ public class AccidentesRepository implements IRepository {
             }
         } else {
             // No hubo conexion
-            System.err.println(" [!] No hubo conexión con la base de datos. Revise los registros.");
+            System.err.println(" [!] No hubo conexión con la base de datos.");
         }
 
         // Devolver el listado
