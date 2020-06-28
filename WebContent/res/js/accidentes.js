@@ -14,7 +14,8 @@ $(function() {
         if(accion === 'borrar') {
             if(confirm('¿Está seguro de querer eliminar el registro del accidente?')) {
                 $(location).attr('href', '?do=borrar&id=' + id);
-                return true;
+            } else {
+                return;
             }
         }
 
