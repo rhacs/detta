@@ -74,9 +74,12 @@ public class AccidentesController extends HttpServlet {
         // Agregar el listado a los atributos de la solicitud
         request.setAttribute("accidentes", accidentes);
 
+        request.setAttribute("activo", "accidentes");
+        request.setAttribute("titulo", "Listado de Accidentes");
+
         // Mostrar contenido correspondiente
         try {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("accidentes.jsp").forward(request, response);
         } catch (ServletException | IOException e) {
             // Recuperar el mensaje de error
             String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
