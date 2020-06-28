@@ -87,6 +87,9 @@ public class ConexionDB {
         try {
             // Verificar que el objeto conexión no exista o que la conexión esté cerrada
             if (conexion == null || conexion.isClosed()) {
+                // Cargar driver de Oracle para realizar la conexión
+                Class.forName("oracle.jdbc.driver.OracleDriver");
+
                 // Crear una nueva conexión
                 conexion = DriverManager.getConnection(url, username, password);
             }
@@ -94,6 +97,13 @@ public class ConexionDB {
             // Ocurrió un error
             System.err.println("ERROR ConexionDB#conectar()");
             extraerExcepcion(e);
+        } catch (ClassNotFoundException e) {
+            // Recuperar mensaje de error
+            String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
+
+            // Mostrar error
+            System.err.println("ERROR ConexionDB#conectar()");
+            System.err.println(" [!] " + mensaje);
         }
 
         return conexion;
