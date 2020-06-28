@@ -305,47 +305,35 @@ public class AccidentesRepository implements IRepository {
     }
 
     @Override
-    public boolean eliminarRegistro(Object object) {
+    public boolean eliminarRegistro(int id) {
         // Crear conexión
         Connection con = conexion.conectar();
 
         // Verificar si hay conexión
         if (con != null) {
-            // Convertir objeto
-            Accidente accidente = (Accidente) object;
+            // Armar consulta
+            String sql = "DELETE FROM accidentes WHERE id = ?";
 
-            // Buscar registro
-            Accidente aux = (Accidente) this.buscarPorID(accidente.getId());
+            try {
+                // Preparar consulta
+                PreparedStatement ps = con.prepareStatement(sql);
 
-            // Verificar si el registro existe
-            if (aux != null) {
-                // Armar consulta
-                String sql = "DELETE FROM accidentes WHERE id = ?";
+                // Insertar identificador
+                ps.setInt(1, id);
 
-                try {
-                    // Preparar consulta
-                    PreparedStatement ps = con.prepareStatement(sql);
+                // Ejecutar consulta
+                boolean fueEliminado = ps.executeUpdate() > 0;
 
-                    // Insertar identificador
-                    ps.setInt(1, accidente.getId());
+                // Cerrar consulta y conexión
+                ps.close();
+                conexion.desconectar();
 
-                    // Ejecutar consulta
-                    boolean fueEliminado = ps.executeUpdate() > 0;
-
-                    // Cerrar consulta y conexión
-                    ps.close();
-                    conexion.desconectar();
-
-                    // Devolver valor obtenido
-                    return fueEliminado;
-                } catch (SQLException e) {
-                    // Ocurrió un error
-                    System.err.println("ERROR AccidentesRepository#eliminarRegistro()");
-                    extraerExcepcion(e);
-                }
-            } else {
-                // El registro no existe
-                System.err.println(" [!] No existe el registro en la tabla ACCIDENTES con ID = " + accidente.getId());
+                // Devolver valor obtenido
+                return fueEliminado;
+            } catch (SQLException e) {
+                // Ocurrió un error
+                System.err.println("ERROR AccidentesRepository#eliminarRegistro()");
+                extraerExcepcion(e);
             }
         } else {
             // No hubo conexión

@@ -44,11 +44,11 @@ public interface IRepository {
     /**
      * Elimina un objeto {@link Object} del repositorio
      * 
-     * @param object un objeto {@link Object} con la información a eliminar
+     * @param id identificador del registro a eliminar
      * 
      * @return {@code true} si el objeto fue eliminado, {@code false} en cualquier
      *         otro caso
      */
-    public boolean eliminarRegistro(Object object);
+    public boolean eliminarRegistro(int id);
 
 }
