@@ -71,7 +71,7 @@ public class AccidentesRepository implements IRepository {
         try {
             accidente.setId(resultSet.getInt("id"));
             accidente.setFecha(resultSet.getDate("fecha").toLocalDate());
-            accidente.setHora(LocalTime.parse(resultSet.getString("hora"), DateTimeFormatter.ofPattern("HH:mm")));
+            accidente.setHora(LocalTime.parse(resultSet.getString("hora")));
             accidente.setDireccion(resultSet.getString("direccion"));
             accidente.setComuna(resultSet.getString("comuna"));
             accidente.setCircunstancia(resultSet.getString("circunstancia"));
@@ -147,7 +147,7 @@ public class AccidentesRepository implements IRepository {
     @Override
     public List<Object> buscarTodos() {
         // Crear lista
-        List<Object> accidentes = null;
+        List<Object> accidentes = new ArrayList<>();
 
         // Crear conexión con base de datos
         Connection con = conexion.conectar();
@@ -165,14 +165,14 @@ public class AccidentesRepository implements IRepository {
                 // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
 
-                accidentes = new ArrayList<>();
-
                 // Recoger todos los resultados
-                while (rs.next()) {
-                    // Crear objeto Accidente
-                    Accidente accidente = extraerAccidente(rs);
-                    // Agregar objeto al listado
-                    accidentes.add(accidente);
+                if (rs.next()) {
+                    do {
+                        // Extraer accidente
+                        Accidente accidente = this.extraerAccidente(rs);
+                        // Agregar accidente al listado
+                        accidentes.add(accidente);
+                    } while (rs.next());
                 }
 
                 // Cerrar consulta y conexión
