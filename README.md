@@ -18,6 +18,10 @@ Este repositorio contiene el desarrollo del ejercicio evolutivo de **Accidentabi
 ## Descripción de los Archivos
 Nombre del Archivo | Descripción
 ------------------ | -----------
+src/cl/rhacs/detta/* | Clases Java del proyecto
+WebContent/* | Contiene los archivos necesarios para mostrar el contenido en el navegador
+WebContent/WEB-INF/web.xml | Descriptor de implementación (Parámetros de configuración del proyecto)
+.gitignore | Contiene la información de los archivos/carpetas ignorados por el repositorio
 Data Definition Language.sql | Definición de las tablas para la base de datos. **NOTA**: Uso de columna de identidad, por lo que se necesita a lo menos la versión **12c**
 LICENSE | Licencia del Proyecto
 README.md | Archivo de texto (formato MarkDown) con la descripción del proyecto
