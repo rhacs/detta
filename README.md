@@ -14,3 +14,11 @@ Este repositorio contiene el desarrollo del ejercicio evolutivo de **Accidentabi
 * [Popper.js v1.16.1](https://popper.js.org/)
 * [Bootstrap v4.5.0](https://getbootstrap.com)
 * [FontAwesome v5.13.1](https://fontawesome.com)
+
+## Descripción de los Archivos
+Nombre del Archivo | Descripción
+------------------ | -----------
+Data Definition Language.sql | Definición de las tablas para la base de datos. **NOTA**: Uso de columna de identidad, por lo que se necesita a lo menos la versión **12c**
+LICENSE | Licencia del Proyecto
+README.md | Archivo de texto (formato MarkDown) con la descripción del proyecto
+pom.xml | Archivo de información y dependencias del proyecto
