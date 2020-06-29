@@ -17,7 +17,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-10 col-12">
                     <div class="table-responsive">
-                        <table class="table table-stripped table-hover">
+                        <table class="table table-striped table-hover">
                             <caption class="mt-0 text-right">Total registros: ${accidentes.size()}</caption>
                             <thead class="thead-dark">
                                 <tr>
