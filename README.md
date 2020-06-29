@@ -23,6 +23,7 @@ WebContent/* | Contiene los archivos necesarios para mostrar el contenido en el 
 WebContent/WEB-INF/web.xml | Descriptor de implementación (Parámetros de configuración del proyecto)
 .gitignore | Contiene la información de los archivos/carpetas ignorados por el repositorio
 Data Definition Language.sql | Definición de las tablas para la base de datos. **NOTA**: Uso de columna de identidad, por lo que se necesita a lo menos la versión **12c** de la base de datos de **Oracle**
+Data Manipulation Language.sql | Definición de los datos a insertar en la base de datos. **NOTA** Datos generados utilizando el servicio web de [Mockaroo.com](https://mockaroo.com)
 LICENSE | Licencia del Proyecto
 README.md | Archivo de texto (formato MarkDown) con la descripción del proyecto
 pom.xml | Archivo de información y dependencias del proyecto
