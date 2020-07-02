@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.rhacs.detta.Utilidades;
 import cl.rhacs.detta.modelos.Empresa;
 import cl.rhacs.detta.modelos.database.Conexion;
 import cl.rhacs.detta.repositorios.interfaces.IEmpresasRepository;
@@ -34,31 +35,6 @@ public class EmpresasRepository implements IEmpresasRepository {
     // -----------------------------------------------------------------------------------------
 
     /**
-     * Extrae la información de la {@link Exception} y la muestra por consola
-     * 
-     * @param funcion nombre de la funcion donde ocurrió el error
-     * @param e       objeto {@link Exception} con la información del error
-     */
-    private void extraerError(String funcion, Exception e) {
-        // Mostrar cabecera
-        System.err.println("EmpresasRepository#" + funcion + "()");
-
-        if (e instanceof SQLException) {
-            // Obtener código de estado
-            String codigo = ((SQLException) e).getSQLState();
-
-            // Mostrar código
-            System.err.println(" [!] Código de Estado SQL: " + codigo);
-        }
-
-        // Obtener mensaje
-        String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
-
-        // Mostrar mensaje
-        System.err.println(" [!] " + mensaje);
-    }
-
-    /**
      * Extrae una {@link Empresa} de un {@link ResultSet}
      * 
      * @param rs objeto {@link ResultSet} con la información a extraer
@@ -81,7 +57,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             empresa.setRegistro(rs.getTimestamp("registro").toLocalDateTime());
             empresa.setActualizacion(rs.getTimestamp("actualizacion").toLocalDateTime());
         } catch (SQLException e) {
-            extraerError("extraerEmpresa", e);
+            Utilidades.extraerError("EmpresasRepository", "extraerEmpresa", e);
         }
 
         return empresa;
@@ -124,7 +100,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Insertar registro en la base de datos
                 registroAgregado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("agregarRegistro", e);
+                Utilidades.extraerError("EmpresasRepository", "agregarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -169,7 +145,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                extraerError("buscarTodos", e);
+                Utilidades.extraerError("EmpresasRepository", "buscarTodos", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -206,7 +182,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                     empresa = extraerEmpresa(rs);
                 }
             } catch (SQLException e) {
-                extraerError("buscarPorId", e);
+                Utilidades.extraerError("EmpresasRepository", "buscarPorId", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -249,7 +225,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("actualizarRegistro", e);
+                Utilidades.extraerError("EmpresasRepository", "actualizaRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -282,7 +258,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Ejecutar consulta
                 registroEliminado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("eliminarRegistro", e);
+                Utilidades.extraerError("EmpresasRepository", "eliminarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -321,7 +297,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                     empresa = extraerEmpresa(rs);
                 }
             } catch (SQLException e) {
-                extraerError("buscarPorRut", e);
+                Utilidades.extraerError("EmpresasRepository", "buscarPorRut", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -369,7 +345,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                extraerError("buscarPorGiro", e);
+                Utilidades.extraerError("EmpresasRepository", "buscarPorGiro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();

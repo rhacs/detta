@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.rhacs.detta.Utilidades;
 import cl.rhacs.detta.modelos.Profesional;
 import cl.rhacs.detta.modelos.database.Conexion;
 import cl.rhacs.detta.repositorios.interfaces.IProfesionalesRepository;
@@ -32,31 +33,6 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     /**
-     * Extrae la información de la {@link Exception} y la muestra por consola
-     * 
-     * @param funcion nombre de la funcion donde ocurrió el error
-     * @param e       objeto {@link Exception} con la información del error
-     */
-    private void extraerError(String funcion, Exception e) {
-        // Mostrar cabecera
-        System.err.println("EmpresasRepository#" + funcion + "()");
-
-        if (e instanceof SQLException) {
-            // Obtener código de estado
-            String codigo = ((SQLException) e).getSQLState();
-
-            // Mostrar código
-            System.err.println(" [!] Código de Estado SQL: " + codigo);
-        }
-
-        // Obtener mensaje
-        String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
-
-        // Mostrar mensaje
-        System.err.println(" [!] " + mensaje);
-    }
-
-    /**
      * Extrae un {@link Profesional} del {@link ResultSet}
      * 
      * @param rs objeto {@link ResultSet} con la información a extraer
@@ -75,7 +51,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
             profesional.setEstadoContrato(rs.getString("estado_contrato"));
             profesional.setPassword(rs.getString("password"));
         } catch (SQLException e) {
-            extraerError("extraerProfesional", e);
+            Utilidades.extraerError("ProfesionalesRepository", "extraerProfesional", e);
         }
 
         return profesional;
@@ -113,7 +89,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 // Ejecutar consulta
                 registroAgregado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("agregarRegistro", e);
+                Utilidades.extraerError("ProfesionalesRepository", "agregarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -158,7 +134,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                extraerError("buscarTodos", e);
+                Utilidades.extraerError("ProfesionalesRepository", "buscarTodos", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -198,7 +174,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                     profesional = extraerProfesional(rs);
                 }
             } catch (SQLException e) {
-                extraerError("buscarPorId", e);
+                Utilidades.extraerError("ProfesionalesRepository", "buscarPorId", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -247,7 +223,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                extraerError("buscarPor", e);
+                Utilidades.extraerError("ProfesionalesRepository", "buscarPor", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -286,7 +262,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("actualizarRegistro", e);
+                Utilidades.extraerError("ProfesionalesRepository", "actualizarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -319,7 +295,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 // Ejecutar consulta
                 registroEliminado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("eliminarRegistro", e);
+                Utilidades.extraerError("ProfesionalesRepository", "eliminarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();

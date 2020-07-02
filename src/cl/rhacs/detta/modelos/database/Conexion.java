@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import cl.rhacs.detta.Utilidades;
+
 public class Conexion {
 
     // Atributos
@@ -60,32 +62,6 @@ public class Conexion {
     }
 
     /**
-     * Extrae la información de la {@link Exception} y la muestra por consola
-     * 
-     * @param funcion   nombre de la función en la que ocurrió el error
-     * @param excepcion objeto {@link Exception} con la información de la excepción
-     */
-    private void extraerExcepcion(String funcion, Exception excepcion) {
-        // Mostrar cabecera
-        System.err.println("Conexion#" + funcion + "()");
-
-        if (excepcion instanceof SQLException) {
-            // Recuperar código de estado
-            String codigo = ((SQLException) excepcion).getSQLState();
-
-            // Mostrar código
-            System.err.println(" [!] Código de Estado SQL: " + codigo);
-        }
-
-        // Recuperar mensaje
-        String mensaje = excepcion.getLocalizedMessage() == null ? excepcion.getMessage()
-                : excepcion.getLocalizedMessage();
-
-        // Mostrar mensaje
-        System.err.println(" [!] " + mensaje);
-    }
-
-    /**
      * Efectúa la conexión con la base de datos
      * 
      * @return un objeto {@link Connection} con la conexión
@@ -101,7 +77,7 @@ public class Conexion {
                 conexion = DriverManager.getConnection(url, username, password);
             }
         } catch (SQLException | ClassNotFoundException e) {
-            extraerExcepcion("conectar", e);
+            Utilidades.extraerError("Conexion", "conectar", e);
         }
 
         return conexion;
@@ -118,7 +94,7 @@ public class Conexion {
                 conexion.close();
             }
         } catch (SQLException e) {
-            extraerExcepcion("desconectar", e);
+            Utilidades.extraerError("Conexion", "desconectar", e);
         }
     }
 

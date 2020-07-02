@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.rhacs.detta.Utilidades;
 import cl.rhacs.detta.modelos.Accidente;
 import cl.rhacs.detta.modelos.database.Conexion;
 import cl.rhacs.detta.repositorios.interfaces.IAccidentesRepository;
@@ -37,31 +38,6 @@ public class AccidentesRepository implements IAccidentesRepository {
     // Métodos
     // -----------------------------------------------------------------------------------------
 
-    /**
-     * Extrae la información de la {@link Exception} y la muestra por consola
-     * 
-     * @param funcion nombre de la funcion donde ocurrió el error
-     * @param e       objeto {@link Exception} con la información del error
-     */
-    private void extraerError(String funcion, Exception e) {
-        // Mostrar cabecera
-        System.err.println("EmpresasRepository#" + funcion + "()");
-
-        if (e instanceof SQLException) {
-            // Obtener código de estado
-            String codigo = ((SQLException) e).getSQLState();
-
-            // Mostrar código
-            System.err.println(" [!] Código de Estado SQL: " + codigo);
-        }
-
-        // Obtener mensaje
-        String mensaje = e.getLocalizedMessage() == null ? e.getMessage() : e.getLocalizedMessage();
-
-        // Mostrar mensaje
-        System.err.println(" [!] " + mensaje);
-    }
-
     private Accidente extraerAccidente(ResultSet rs) {
         // Crear respuesta
         Accidente accidente = new Accidente();
@@ -81,7 +57,7 @@ public class AccidentesRepository implements IAccidentesRepository {
             accidente.setRegistro(rs.getTimestamp("registro").toLocalDateTime());
             accidente.setActualizacion(rs.getTimestamp("actualizacion").toLocalDateTime());
         } catch (SQLException e) {
-            extraerError("extraerAccidente", e);
+            Utilidades.extraerError("AccidentesRepository", "extraerAccidente", e);
         }
 
         return accidente;
@@ -128,7 +104,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Ejecutar consulta
                 registroAgregado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("agregarRegistro", e);
+                Utilidades.extraerError("AccidentesRepository", "agregarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -174,7 +150,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                extraerError("buscarTodos", e);
+                Utilidades.extraerError("AccidentesRepository", "buscarTodos", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -215,7 +191,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                     accidente = extraerAccidente(rs);
                 }
             } catch (SQLException e) {
-                extraerError("buscarPorId", e);
+                Utilidades.extraerError("AccidentesRepository", "buscarPorId", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -264,7 +240,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                extraerError("buscarPorFecha", e);
+                Utilidades.extraerError("AccidentesRepository", "buscarPorFecha", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -313,7 +289,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                extraerError("buscarPor", e);
+                Utilidades.extraerError("AccidentesRepository", "buscarPor", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -360,7 +336,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("actualizarRegistro", e);
+                Utilidades.extraerError("AccidentesRepository", "actualizarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -393,7 +369,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Ejecutar consulta
                 registroEliminado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                extraerError("eliminarRegistro", e);
+                Utilidades.extraerError("AccidentesRepository", "eliminarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
