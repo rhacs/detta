@@ -91,7 +91,7 @@ public class EmpresasRepository implements IEmpresasRepository {
     // -----------------------------------------------------------------------------------------
 
     @Override
-    public boolean agregarRegistro(Object objeto) {
+    public boolean agregarRegistro(Object objeto, int padreId) {
         // Crear respuesta
         boolean registroAgregado = false;
 
@@ -103,8 +103,8 @@ public class EmpresasRepository implements IEmpresasRepository {
             try {
                 // Definir consulta
                 String sql = "INSERT INTO empresas (nombre, rut, direccion, telefono, giro, "
-                        + "trabajadores, tipo, registro, actualizacion) VALUES (?, ?, ?, ?, "
-                        + "?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                        + "trabajadores, tipo, registro, actualizacion, profesional_id) VALUES (?, "
+                        + "?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
                 // Convertir objeto
                 Empresa empresa = (Empresa) objeto;
