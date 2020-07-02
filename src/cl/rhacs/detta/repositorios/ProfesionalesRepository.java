@@ -85,7 +85,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     // -----------------------------------------------------------------------------------------
 
     @Override
-    public boolean agregarRegistro(Object objeto) {
+    public boolean agregarRegistro(Profesional profesional) {
         // Crear respuesta
         boolean registroAgregado = false;
 
@@ -98,9 +98,6 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 // Definir consulta
                 String sql = "INSERT INTO profesionales (nombre, email, direccion, telefono, "
                         + "estado_contrato, password) VALUES (?, ?, ?, ?, ?, ?)";
-
-                // Convertir objeto
-                Profesional profesional = (Profesional) objeto;
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -127,9 +124,9 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     @Override
-    public List<Object> buscarTodos() {
+    public List<Profesional> buscarTodos() {
         // Crear listado
-        List<Object> profesionales = null;
+        List<Profesional> profesionales = null;
 
         // Conectar
         Connection con = conexion.conectar();
@@ -172,7 +169,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     @Override
-    public Object buscarPorId(int id) {
+    public Profesional buscarPorId(int id) {
         // Crear profesional
         Profesional profesional = null;
 
@@ -261,7 +258,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     @Override
-    public boolean actualizarRegistro(Object objeto) {
+    public boolean actualizarRegistro(Profesional profesional) {
         // Crear respuesta
         boolean registroActualizado = false;
 
@@ -274,9 +271,6 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 // Definir consulta
                 String sql = "UPDATE profesionales SET nombre = ?, email = ?, direccion = ?, "
                         + "telefono = ?, estado_contrato = ? WHERE id = ?";
-
-                // Convertir objeto
-                Profesional profesional = (Profesional) objeto;
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
