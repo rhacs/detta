@@ -7,24 +7,14 @@ import cl.rhacs.detta.modelos.Profesional;
 public interface IProfesionalesRepository extends IRepository {
 
     /**
-     * Busca en el repositorio el o los {@link Profesional}es con el nombre
-     * proporcionado
+     * Busca en el repositorio todos los registros que en su {@code campo} tengan un
+     * valor igual o parecido a {@code valor}
      * 
-     * @param nombre el nombre a buscar
-     * @return un objeto {@link List} con los resultados obtenidos, {@code null} en
-     *         cualquier otro caso
+     * @param campo campo sobre el cual realizar la búsqueda
+     * @param valor valor a buscar
+     * @return un objeto {@link List} con los resultados, {@code null} en cualquier
+     *         otro caso
      */
-    public List<Profesional> buscarPorNombre(String nombre);
-
-    /**
-     * Busca en el repositorio todos aquellos registros que tienen el estado del
-     * contrato especificado
-     * 
-     * @param estadoContrato el estado del contrato a buscar
-     * @return un objeto {@link List} con los resultados obtenidos, {@code null} en
-     *         cualquier otro caso
-     * @see Profesional#getEstadoContrato()
-     */
-    public List<Profesional> buscarPorEstadoContrato(String estadoContrato);
+    public List<Profesional> buscarPor(String campo, String valor);
 
 }
