@@ -72,7 +72,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "INSERT INTO profesionales (nombre, email, direccion, telefono, "
+                String sql = "INSERT INTO detta_profesionales (nombre, email, direccion, telefono, "
                         + "estado_contrato, password) VALUES (?, ?, ?, ?, ?, ?)";
 
                 // Preparar consulta
@@ -112,7 +112,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM profesionales";
+                        + "password FROM detta_profesionales";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -157,7 +157,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM profesionales WHERE id = ?";
+                        + "password FROM detta_profesionales WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -197,7 +197,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM profesionales WHERE ? LIKE ?";
+                        + "password FROM detta_profesionales WHERE ? LIKE ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -245,7 +245,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "UPDATE profesionales SET nombre = ?, email = ?, direccion = ?, "
+                String sql = "UPDATE detta_profesionales SET nombre = ?, email = ?, direccion = ?, "
                         + "telefono = ?, estado_contrato = ? WHERE id = ?";
 
                 // Preparar consulta
@@ -284,7 +284,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "DELETE FROM profesionales WHERE id = ?";
+                String sql = "DELETE FROM detta_profesionales WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
