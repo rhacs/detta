@@ -20,7 +20,7 @@ public class Profesional {
     /** Teléfono de contacto del {@link Profesional} */
     private String telefono;
 
-    /** Estado del contrato del {@link Profesional} (activo, terminado) */
+    /** Estado del contrato del {@link Profesional} (vigente, terminado) */
     private String estadoContrato;
 
     /** Contraseña de acceso del {@link Profesional} */
