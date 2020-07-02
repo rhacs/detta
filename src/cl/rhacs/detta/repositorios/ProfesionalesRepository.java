@@ -197,14 +197,13 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM detta_profesionales WHERE ? LIKE ?";
+                        + "password FROM detta_profesionales WHERE " + campo + " = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
                 // Llenar consulta
-                ps.setString(1, campo);
-                ps.setString(2, '%' + valor + '%');
+                ps.setString(1, valor);
 
                 // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
