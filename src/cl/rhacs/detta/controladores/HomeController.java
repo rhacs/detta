@@ -1,6 +1,7 @@
 package cl.rhacs.detta.controladores;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import cl.rhacs.detta.modelos.Profesional;
+import cl.rhacs.detta.modelos.database.Conexion;
+import cl.rhacs.detta.repositorios.ProfesionalesRepository;
 
 @WebServlet(name = "HomeController", urlPatterns = { "" })
 public class HomeController extends HttpServlet {
@@ -17,6 +22,11 @@ public class HomeController extends HttpServlet {
 
     /** Número de serie de la clase */
     private static final long serialVersionUID = -4418477024354810199L;
+
+    // Atributos
+    // -----------------------------------------------------------------------------------------
+
+    private ProfesionalesRepository profesionalesRepository;
 
     // Constructores
     // -----------------------------------------------------------------------------------------
@@ -40,6 +50,9 @@ public class HomeController extends HttpServlet {
         String url = contexto.getInitParameter("jdbcURL");
         String user = contexto.getInitParameter("jdbcUsername");
         String pass = contexto.getInitParameter("jdbcPassword");
+
+        // Inicializar repositorios
+        profesionalesRepository = new ProfesionalesRepository(Conexion.getInstance(url, user, pass));
     }
 
     // Solicitudes
@@ -60,7 +73,11 @@ public class HomeController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Buscar todos los profesionales
+        List<Profesional> profesionales = profesionalesRepository.buscarPor("estado_contrato", "vigente");
+
         // Agregar atributos a la solicitud
+        request.setAttribute("profesionales", profesionales);
         request.setAttribute("activo", "home");
 
         // Mostrar contenido correspondiente
