@@ -89,6 +89,18 @@ public class HomeController extends HttpServlet {
         if (sesion.getAttribute("loggedIn") != null && ((boolean) sesion.getAttribute("loggedIn"))) {
             response.sendRedirect(request.getContextPath() + "/panel");
         } else {
+            // Verificar si hay error
+            if (sesion.getAttribute("loginError") != null) {
+                // Obtener mensaje
+                String error = (String) sesion.getAttribute("loginError");
+
+                // Borrar mensaje del objeto de sesión
+                sesion.removeAttribute("loginError");
+
+                // Agregar error al request
+                request.setAttribute("error", error);
+            }
+
             // Mostrar contenido correspondiente
             request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
         }
