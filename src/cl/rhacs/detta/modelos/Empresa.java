@@ -37,6 +37,9 @@ public class Empresa {
      */
     private String tipo;
 
+    /** Contraseña de inicio de sesión de la {@link Empresa} */
+    private String password;
+
     /** Fecha en la cual la {@link Empresa} fue registrada en el sistema */
     private LocalDateTime registro;
 
@@ -121,6 +124,13 @@ public class Empresa {
     public final String getTipo() {
         return tipo;
     }
+    
+    /**
+     * @return la contraseña de inicio de sesión
+     */
+    public final String getPassword() {
+        return password;
+    }
 
     /**
      * @return la fecha en la cual la {@link Empresa} fue registrada
@@ -202,6 +212,13 @@ public class Empresa {
      */
     public final void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+    
+    /**
+     * @param password la contraseña de inicio de sesión a establecer
+     */
+    public final void setPassword(String password) {
+        this.password = password;
     }
 
     /**

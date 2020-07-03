@@ -55,6 +55,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             empresa.setGiro(rs.getString("giro"));
             empresa.setTrabajadores(rs.getInt("trabajadores"));
             empresa.setTipo(rs.getString("tipo"));
+            empresa.setPassword(rs.getString("password"));
             empresa.setRegistro(rs.getTimestamp("registro").toLocalDateTime());
             empresa.setActualizacion(rs.getTimestamp("actualizacion").toLocalDateTime());
         } catch (SQLException e) {
@@ -79,9 +80,9 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "INSERT INTO empresas (nombre, rut, direccion, telefono, email, giro, "
-                        + "trabajadores, tipo, registro, actualizacion, profesional_id) VALUES (?, "
-                        + "?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                String sql = "INSERT INTO detta_empresas (nombre, rut, direccion, telefono, email, giro, "
+                        + "trabajadores, tipo, password, registro, actualizacion, profesional_id) VALUES (?, "
+                        + "?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)";
 
                 // Convertir objeto
                 Empresa empresa = (Empresa) objeto;
@@ -98,6 +99,8 @@ public class EmpresasRepository implements IEmpresasRepository {
                 ps.setString(6, empresa.getGiro());
                 ps.setInt(7, empresa.getTrabajadores());
                 ps.setString(8, empresa.getTipo());
+                ps.setString(9, empresa.getPassword());
+                ps.setInt(10, padreId);
 
                 // Insertar registro en la base de datos
                 registroAgregado = ps.executeUpdate() > 0;
@@ -124,8 +127,8 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, nombre, rut, direccion, telefono, email, firo, trabajadores, "
-                        + "tipo, registro, actualizacion FROM empresas";
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
+                        + "tipo, password, registro, actualizacion FROM detta_empresas";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -170,7 +173,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
-                        + "tipo, registro, actualizacion FROM empresas WHERE id = ?";
+                        + "tipo, password, registro, actualizacion FROM detta_empresas WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -207,7 +210,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores,"
-                        + " tipo, registro, actualizacion FROM empresas WHERE email = ?";
+                        + " tipo, password, registro, actualizacion FROM detta_empresas WHERE email = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -247,7 +250,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
-                        + "tipo, registro, actualizacion FROM empresas WHERE rut = ?";
+                        + "tipo, password, registro, actualizacion FROM detta_empresas WHERE rut = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -286,7 +289,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
-                        + "tipo, registro, actualizacion FROM empresas WHERE giro LIKE ?";
+                        + "tipo, password, registro, actualizacion FROM detta_empresas WHERE giro LIKE ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -333,8 +336,8 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "UPDATE empresas SET nombre = ?, rut = ?, direccion = ?, telefono = ?, email = ?, "
-                        + "giro = ?, trabajadores = ?, tipo = ?, actualizacion = CURRENT_TIMESTAMP WHERE id = ?";
+                String sql = "UPDATE detta_empresas SET nombre = ?, rut = ?, direccion = ?, telefono = ?, email = ?, "
+                        + "giro = ?, password = ?, trabajadores = ?, tipo = ?, actualizacion = CURRENT_TIMESTAMP WHERE id = ?";
 
                 // Convertir objeto
                 Empresa empresa = (Empresa) objeto;
