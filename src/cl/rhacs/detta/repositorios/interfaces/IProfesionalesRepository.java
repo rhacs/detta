@@ -33,6 +33,16 @@ public interface IProfesionalesRepository {
     public Profesional buscarPorId(int id);
 
     /**
+     * Busca un registro en el repositorio en base al correo electrónico
+     * proporcionado
+     * 
+     * @param email correo electrónico a buscar
+     * @return objeto {@link Profesional} con el resultado, {@code null} en
+     *         cualquier otro caso
+     */
+    public Profesional buscarPorEmail(String email);
+
+    /**
      * Actualiza la información de un registro dada la información proporcionada
      * 
      * @param profesional objeto {@link Profesional} que contiene la información a

@@ -185,6 +185,46 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     @Override
+    public Profesional buscarPorEmail(String email) {
+        // Crear profesional
+        Profesional profesional = null;
+
+        // Conectar
+        Connection con = conexion.conectar();
+
+        // Verificar si hubo conexión
+        if (con != null) {
+            try {
+                // Definir consulta
+                String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
+                        + "password FROM detta_profesionales WHERE email = ?";
+
+                // Preparar consulta
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                // Llenar consulta
+                ps.setString(1, email);
+
+                // Ejecutar consulta
+                ResultSet rs = ps.executeQuery();
+
+                // Verificar si hay resultados
+                if (rs.next()) {
+                    // Extraer profesional
+                    profesional = extraerProfesional(rs);
+                }
+            } catch (SQLException e) {
+                Utilidades.extraerError("ProfesionalesRepository", "buscarPorEmail", e);
+            } finally {
+                // Desconectar
+                conexion.desconectar();
+            }
+        }
+
+        return profesional;
+    }
+
+    @Override
     public List<Profesional> buscarPor(String campo, String valor) {
         // Crear listado
         List<Profesional> profesionales = null;
