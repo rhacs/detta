@@ -161,6 +161,7 @@ public class HomeController extends HttpServlet {
 
             // Agregar error al request
             request.setAttribute("error", error);
+            request.setAttribute("email", email);
 
             // Mostrar contenido
             request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
