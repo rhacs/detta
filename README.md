@@ -7,7 +7,7 @@ Pequeña implementación del ejercicio evolutivo de **Accidentabilidad Laboral**
 
 ### Java
  - [JavaServer Pages Standard Tag Library v1.2](https://mvnrepository.com/artifact/javax.servlet/jstl/1.2)
- - [Oracle JDBC](https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html)
+ - [Oracle Java DataBase Connectivity](https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html)
 
 ### JavaScript
  - [jQuery v3.5.1](https://jquery.com)
