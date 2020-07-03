@@ -51,6 +51,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             empresa.setRut(rs.getString("rut"));
             empresa.setDireccion(rs.getString("direccion"));
             empresa.setTelefono(rs.getString("telefono"));
+            empresa.setEmail(rs.getString("email"));
             empresa.setGiro(rs.getString("giro"));
             empresa.setTrabajadores(rs.getInt("trabajadores"));
             empresa.setTipo(rs.getString("tipo"));
@@ -78,9 +79,9 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "INSERT INTO empresas (nombre, rut, direccion, telefono, giro, "
+                String sql = "INSERT INTO empresas (nombre, rut, direccion, telefono, email, giro, "
                         + "trabajadores, tipo, registro, actualizacion, profesional_id) VALUES (?, "
-                        + "?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                        + "?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 
                 // Convertir objeto
                 Empresa empresa = (Empresa) objeto;
@@ -93,9 +94,10 @@ public class EmpresasRepository implements IEmpresasRepository {
                 ps.setString(2, empresa.getRut());
                 ps.setString(3, empresa.getDireccion());
                 ps.setString(4, empresa.getTelefono());
-                ps.setString(5, empresa.getGiro());
-                ps.setInt(6, empresa.getTrabajadores());
-                ps.setString(7, empresa.getTipo());
+                ps.setString(5, empresa.getEmail());
+                ps.setString(6, empresa.getGiro());
+                ps.setInt(7, empresa.getTrabajadores());
+                ps.setString(8, empresa.getTipo());
 
                 // Insertar registro en la base de datos
                 registroAgregado = ps.executeUpdate() > 0;
@@ -122,7 +124,7 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, nombre, rut, direccion, telefono, firo, trabajadores, "
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, firo, trabajadores, "
                         + "tipo, registro, actualizacion FROM empresas";
 
                 // Preparar consulta
@@ -167,7 +169,7 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, nombre, rut, direccion, telefono, giro, trabajadores, "
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
                         + "tipo, registro, actualizacion FROM empresas WHERE id = ?";
 
                 // Preparar consulta
@@ -193,6 +195,133 @@ public class EmpresasRepository implements IEmpresasRepository {
     }
 
     @Override
+    public Empresa buscarPorEmail(String email) {
+        // Crear objeto
+        Empresa empresa = null;
+
+        // Conectar
+        Connection con = conexion.conectar();
+
+        // Verificar conexión
+        if (con != null) {
+            try {
+                // Definir consulta
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores,"
+                        + " tipo, registro, actualizacion FROM empresas WHERE email = ?";
+
+                // Preparar consulta
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                // Llenar consulta
+                ps.setString(1, email);
+
+                // Ejecutar consulta
+                ResultSet rs = ps.executeQuery();
+
+                // Verificar si hay resultados
+                if (rs.next()) {
+                    // Extraer empresa
+                    empresa = extraerEmpresa(rs);
+                }
+            } catch (SQLException e) {
+                Utilidades.extraerError("EmpresasRepository", "buscarPorEmail", e);
+            } finally {
+                // Desconectar
+                conexion.desconectar();
+            }
+        }
+
+        return empresa;
+    }
+
+    @Override
+    public Empresa buscarPorRut(String rut) {
+        // Crear objeto
+        Empresa empresa = null;
+
+        // Conectar
+        Connection con = conexion.conectar();
+
+        // Verificar si hay conexión
+        if (con != null) {
+            try {
+                // Definir consulta
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
+                        + "tipo, registro, actualizacion FROM empresas WHERE rut = ?";
+
+                // Preparar consulta
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                // Llenar consulta
+                ps.setString(1, rut);
+
+                // Ejecutar consulta
+                ResultSet rs = ps.executeQuery();
+
+                // Verificar si hay resultados
+                if (rs.next()) {
+                    empresa = extraerEmpresa(rs);
+                }
+            } catch (SQLException e) {
+                Utilidades.extraerError("EmpresasRepository", "buscarPorRut", e);
+            } finally {
+                // Desconectar
+                conexion.desconectar();
+            }
+        }
+
+        return empresa;
+    }
+
+    @Override
+    public List<Empresa> buscarPorGiro(String giro) {
+        // Crear listado
+        List<Empresa> empresas = null;
+
+        // Conectar
+        Connection con = conexion.conectar();
+
+        // Verificar si hay conexión
+        if (con != null) {
+            try {
+                // Definir consulta
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
+                        + "tipo, registro, actualizacion FROM empresas WHERE giro LIKE ?";
+
+                // Preparar consulta
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                // Llenar consulta
+                ps.setString(1, '%' + giro + '%');
+
+                // Ejecutar consulta
+                ResultSet rs = ps.executeQuery();
+
+                // Verificar si hay resultados
+                if (rs.next()) {
+                    // Inicializar listado
+                    empresas = new ArrayList<>();
+
+                    // Extraer resultados
+                    do {
+                        Empresa empresa = extraerEmpresa(rs);
+
+                        // Agregar empresa al listado
+                        empresas.add(empresa);
+                    } while (rs.next());
+                }
+            } catch (SQLException e) {
+                Utilidades.extraerError("EmpresasRepository", "buscarPorGiro", e);
+            } finally {
+                // Desconectar
+                conexion.desconectar();
+            }
+        }
+
+        return empresas;
+    }
+
+    @Override
     public boolean actualizarRegistro(Object objeto) {
         // Crear respuesta
         boolean registroActualizado = false;
@@ -204,7 +333,7 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "UPDATE empresas SET nombre = ?, rut = ?, direccion = ?, telefono = ?, "
+                String sql = "UPDATE empresas SET nombre = ?, rut = ?, direccion = ?, telefono = ?, email = ?, "
                         + "giro = ?, trabajadores = ?, tipo = ?, actualizacion = CURRENT_TIMESTAMP WHERE id = ?";
 
                 // Convertir objeto
@@ -218,9 +347,10 @@ public class EmpresasRepository implements IEmpresasRepository {
                 ps.setString(2, empresa.getRut());
                 ps.setString(3, empresa.getDireccion());
                 ps.setString(4, empresa.getTelefono());
-                ps.setString(5, empresa.getGiro());
-                ps.setInt(6, empresa.getTrabajadores());
-                ps.setString(7, empresa.getTipo());
+                ps.setString(5, empresa.getEmail());
+                ps.setString(6, empresa.getGiro());
+                ps.setInt(7, empresa.getTrabajadores());
+                ps.setString(8, empresa.getTipo());
 
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
@@ -266,93 +396,6 @@ public class EmpresasRepository implements IEmpresasRepository {
         }
 
         return registroEliminado;
-    }
-
-    @Override
-    public Empresa buscarPorRut(String rut) {
-        // Crear objeto
-        Empresa empresa = null;
-
-        // Conectar
-        Connection con = conexion.conectar();
-
-        // Verificar si hay conexión
-        if (con != null) {
-            try {
-                // Definir consulta
-                String sql = "SELECT id, nombre, rut, direccion, telefono, giro, trabajadores, "
-                        + "tipo, registro, actualizacion FROM empresas WHERE rut = ?";
-
-                // Preparar consulta
-                PreparedStatement ps = con.prepareStatement(sql);
-
-                // Llenar consulta
-                ps.setString(1, rut);
-
-                // Ejecutar consulta
-                ResultSet rs = ps.executeQuery();
-
-                // Verificar si hay resultados
-                if (rs.next()) {
-                    empresa = extraerEmpresa(rs);
-                }
-            } catch (SQLException e) {
-                Utilidades.extraerError("EmpresasRepository", "buscarPorRut", e);
-            } finally {
-                // Desconectar
-                conexion.desconectar();
-            }
-        }
-
-        return empresa;
-    }
-
-    @Override
-    public List<Empresa> buscarPorGiro(String giro) {
-        // Crear listado
-        List<Empresa> empresas = null;
-
-        // Conectar
-        Connection con = conexion.conectar();
-
-        // Verificar si hay conexión
-        if (con != null) {
-            try {
-                // Definir consulta
-                String sql = "SELECT id, nombre, rut, direccion, telefono, giro, trabajadores, "
-                        + "tipo, registro, actualizacion FROM empresas WHERE giro LIKE ?";
-
-                // Preparar consulta
-                PreparedStatement ps = con.prepareStatement(sql);
-
-                // Llenar consulta
-                ps.setString(1, '%' + giro + '%');
-
-                // Ejecutar consulta
-                ResultSet rs = ps.executeQuery();
-
-                // Verificar si hay resultados
-                if (rs.next()) {
-                    // Inicializar listado
-                    empresas = new ArrayList<>();
-
-                    // Extraer resultados
-                    do {
-                        Empresa empresa = extraerEmpresa(rs);
-
-                        // Agregar empresa al listado
-                        empresas.add(empresa);
-                    } while (rs.next());
-                }
-            } catch (SQLException e) {
-                Utilidades.extraerError("EmpresasRepository", "buscarPorGiro", e);
-            } finally {
-                // Desconectar
-                conexion.desconectar();
-            }
-        }
-
-        return empresas;
     }
 
 }

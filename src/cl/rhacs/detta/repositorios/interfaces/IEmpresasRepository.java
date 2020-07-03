@@ -24,4 +24,13 @@ public interface IEmpresasRepository extends IRepository {
      */
     public List<Empresa> buscarPorGiro(String giro);
 
+    /**
+     * Busca un registro en el repositorio dado un correo electrónico
+     * 
+     * @param email correo electrónico a buscar
+     * @return un objeto {@link Empresa} con los resultados, {@code null} en
+     *         cualquier otro caso
+     */
+    public Empresa buscarPorEmail(String email);
+
 }

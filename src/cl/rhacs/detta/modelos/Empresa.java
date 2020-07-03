@@ -22,6 +22,9 @@ public class Empresa {
     /** Teléfono de contacto de la {@link Empresa} */
     private String telefono;
 
+    /** Correo electrónico de la {@link Empresa} */
+    private String email;
+
     /** Actividad económica principal de la {@link Empresa} */
     private String giro;
 
@@ -89,6 +92,13 @@ public class Empresa {
      */
     public final String getTelefono() {
         return telefono;
+    }
+
+    /**
+     * @return el correo electrónico
+     */
+    public final String getEmail() {
+        return email;
     }
 
     /**
@@ -166,6 +176,13 @@ public class Empresa {
     }
 
     /**
+     * @param email el correo electrónico a establecer
+     */
+    public final void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
      * @param giro la actividad económica a establecer
      */
     public final void setGiro(String giro) {
@@ -213,6 +230,7 @@ public class Empresa {
 
         result = prime * result + id;
         result = prime * result + ((rut == null) ? 0 : rut.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
 
         return result;
     }
@@ -239,14 +257,20 @@ public class Empresa {
         } else if (!rut.equals(other.rut))
             return false;
 
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+
         return true;
     }
 
     @Override
     public String toString() {
         return "Empresa [id=" + id + ", nombre=" + nombre + ", rut=" + rut + ", direccion=" + direccion + ", telefono="
-                + telefono + ", giro=" + giro + ", trabajadores=" + trabajadores + ", tipo=" + tipo + ", registro="
-                + registro + ", actualizacion=" + actualizacion + "]";
+                + telefono + ", email=" + email + ", giro=" + giro + ", trabajadores=" + trabajadores + ", tipo=" + tipo
+                + ", registro=" + registro + ", actualizacion=" + actualizacion + "]";
     }
 
 }
