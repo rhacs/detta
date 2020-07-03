@@ -1,8 +1,8 @@
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
     <!-- Sidebar -->
             <nav id="sidebar" class="col-md-4 col-lg-3 col-xl-2 d-md-block bg-light sidebar collapse">
-                <div class="sidebar-sticky pt-3">
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">Dashboard</h6>
+                <div class="sidebar-sticky pt-2">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-1 mt-4 text-muted">Dashboard</h6>
                     <ul class="nav flex-column">
                         <li class="nav-item ml-2">
                             <a class="nav-link ${ activo != null ? (activo == 'home' ? 'active' : '') : '' }" href="<core:url value="/panel" />">
