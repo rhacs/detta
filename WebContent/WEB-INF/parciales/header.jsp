@@ -12,5 +12,6 @@
 
         <!-- Hojas de Estilo -->
         <link rel="stylesheet" href="<core:url value="/resources/css/bootstrap.min.css" />">
+        <link rel="stylesheet" href="<core:url value="/resources/css/estilo.css" />">
     </head>
     <!-- /Head -->
