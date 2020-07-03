@@ -1,7 +1,7 @@
 package cl.rhacs.detta.controladores;
 
 import java.io.IOException;
-import java.util.List;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,9 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import cl.rhacs.detta.Utilidades;
+import cl.rhacs.detta.modelos.Empresa;
 import cl.rhacs.detta.modelos.Profesional;
 import cl.rhacs.detta.modelos.database.Conexion;
+import cl.rhacs.detta.repositorios.EmpresasRepository;
 import cl.rhacs.detta.repositorios.ProfesionalesRepository;
 
 @WebServlet(name = "HomeController", urlPatterns = { "" })
@@ -27,6 +31,7 @@ public class HomeController extends HttpServlet {
     // -----------------------------------------------------------------------------------------
 
     private ProfesionalesRepository profesionalesRepository;
+    private EmpresasRepository empresasRepository;
 
     // Constructores
     // -----------------------------------------------------------------------------------------
@@ -51,8 +56,12 @@ public class HomeController extends HttpServlet {
         String user = contexto.getInitParameter("jdbcUsername");
         String pass = contexto.getInitParameter("jdbcPassword");
 
+        // Crear objeto de conexión
+        Conexion conexion = Conexion.getInstance(url, user, pass);
+
         // Inicializar repositorios
-        profesionalesRepository = new ProfesionalesRepository(Conexion.getInstance(url, user, pass));
+        profesionalesRepository = new ProfesionalesRepository(conexion);
+        empresasRepository = new EmpresasRepository(conexion);
     }
 
     // Solicitudes
@@ -73,15 +82,89 @@ public class HomeController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Buscar todos los profesionales
-        List<Profesional> profesionales = profesionalesRepository.buscarPor("estado_contrato", "vigente");
+        // Obtener objeto de sesión
+        HttpSession sesion = request.getSession();
 
-        // Agregar atributos a la solicitud
-        request.setAttribute("profesionales", profesionales);
-        request.setAttribute("activo", "home");
+        // Verificar si la sesión está iniciada
+        if (sesion.getAttribute("loggedIn") != null) {
+            boolean loggedIn = (boolean) sesion.getAttribute("loggedIn");
+
+            if (loggedIn) {
+                // Redirigir al usuario al panel
+                response.sendRedirect(request.getContextPath() + "/panel");
+            }
+        }
 
         // Mostrar contenido correspondiente
         request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
+    }
+
+    /**
+     * Maneja las solicitudes POST al {@link HttpServlet}
+     * 
+     * @param request  un objeto {@link HttpServletRequest} que contiene la
+     *                 solicitud realizada por el cliente al {@link HttpServlet}
+     * @param response un objeto {@link HttpServletResponse} que contiene la
+     *                 respuesta que le envía el {@link HttpServlet} al cliente
+     * 
+     * @throws ServletException si una excepción interrumpe el funcionamiento normal
+     *                          del {@link HttpServlet}
+     * @throws IOException      si un error de entrada/salida es detectado cuando el
+     *                          {@link HttpServlet} maneja la solicitud GET
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Obtener objeto de sesión
+        HttpSession sesion = request.getSession();
+
+        // Obtener información enviada por el usuario
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        // Codificar contraseña
+        try {
+            password = Utilidades.codificarContrasena(password);
+        } catch (NoSuchAlgorithmException e) {
+            Utilidades.extraerError("HomeController", "doPost", e);
+        }
+
+        // Buscar el usuario en los registros
+        Profesional profesional = profesionalesRepository.buscarPorEmail(email);
+        Empresa empresa = empresasRepository.buscarPorEmail(email);
+
+        // Contraseña a comparar
+        String comparame = null;
+
+        // Rol del usuario
+        String rol = null;
+
+        // Verificar si hay resultado
+        if (profesional != null) {
+            comparame = profesional.getPassword();
+            rol = "profesional";
+        } else if (empresa != null) {
+            empresa.getPassword();
+            rol = "empresa";
+        }
+
+        // Verificar que haya contraseña y que sea igual a la ingresada
+        if (comparame != null && comparame.equals(password)) {
+            // Inicio de sesión correcto
+            sesion.setAttribute("loggedIn", true);
+            sesion.setAttribute("rol", rol);
+
+            // Redireccionar al usuario al panel
+            response.sendRedirect(request.getContextPath() + "/panel");
+        } else {
+            // Crear mensaje de error
+            String error = "Las credenciales proporcionadas no coinciden con los almacenados en nuestros registros.";
+
+            // Agregar error al request
+            request.setAttribute("error", error);
+
+            // Mostrar contenido
+            request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
+        }
     }
 
 }
