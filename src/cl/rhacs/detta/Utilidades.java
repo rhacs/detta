@@ -1,6 +1,10 @@
 package cl.rhacs.detta;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Base64;
 
 public class Utilidades {
 
@@ -29,6 +33,21 @@ public class Utilidades {
 
         // Mostrar mensaje
         System.err.println(String.format(" [!] %s", mensaje));
+    }
+
+    /**
+     * Codifica una contraseña utilizando el algoritmo SHA-256
+     * 
+     * @param password contraseña a codificar
+     * @return la contraseña codificada
+     * @throws NoSuchAlgorithmException cuando el algoritmo especificado no existe o
+     *                                  no está disponible en el entorno
+     */
+    public static String codificarContrasena(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+        return Base64.getEncoder().encodeToString(hash);
     }
 
 }
