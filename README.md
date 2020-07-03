@@ -12,4 +12,5 @@ Pequeña implementación del ejercicio evolutivo de Accidentabilidad Laboral par
 ### JavaScript
  - [jQuery v3.5.1](https://jquery.com)
    - [LoadingOverlay v2.1.7](https://gasparesganga.com/labs/jquery-loading-overlay/)
+   - [Validator v1.19.2](https://jqueryvalidation.org/)
  - [FontAwesome (all) v5.13.1](https://fontawesome.com)
