@@ -15,9 +15,6 @@ import cl.rhacs.detta.repositorios.AccidentesRepository;
 import cl.rhacs.detta.repositorios.EmpresasRepository;
 import cl.rhacs.detta.repositorios.ProfesionalesRepository;
 
-/**
- * Servlet implementation class PanelController
- */
 @WebServlet(name = "PanelController", urlPatterns = { "/panel" })
 public class PanelController extends HttpServlet {
 
@@ -93,6 +90,7 @@ public class PanelController extends HttpServlet {
         if (sesion.getAttribute("loggedIn") != null && ((boolean) sesion.getAttribute("loggedIn"))) {
             // Insertar título
             request.setAttribute("titulo", "Dashboard");
+            request.setAttribute("activo", "home");
 
             // Mostrar contenido
             request.getRequestDispatcher("WEB-INF/panel.jsp").forward(request, response);
