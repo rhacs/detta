@@ -16,3 +16,4 @@ Pequeña implementación del ejercicio evolutivo de **Accidentabilidad Laboral**
  - [Popper.js v1.16.1](https://popper.js.org)
  - [Bootstrap v.4.5.0](https://getbootstrap.com)
  - [FontAwesome (all) v5.13.1](https://fontawesome.com)
+ - [Chart.js v2.9.3](https://chartjs.org)
