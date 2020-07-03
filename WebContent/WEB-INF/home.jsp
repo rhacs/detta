@@ -13,7 +13,7 @@
         <title>Detta</title>
         
         <!-- Hojas de Estilo -->
-        <link rel="stylesheet" href="<core:url value="/resources/css/login.css" />" type="text/css">
+        <link rel="stylesheet" href="<core:url value="/resources/css/home.css" />" type="text/css">
     </head>
     <body>
 
@@ -25,8 +25,8 @@
                 <div class="alerta">${ error }</div>
                 </core:if>
                 <div class="otro-contenedor">
-                    <input type="email" id="email" name="email" placeholder="Correo electrónico" autocomplete="email" required>
-                    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                    <input class="top" type="email" id="email" name="email" placeholder="Correo electrónico" autocomplete="email" value="<core:if test="${ not empty email }">${ email }</core:if>" autofocus>
+                    <input class="bottom" type="password" id="password" name="password" placeholder="Contraseña">
                 </div>
 
                 <button type="submit">Iniciar Sesión</button>
@@ -35,6 +35,7 @@
 
         <!-- JavaScripts -->
         <script type="text/javascript" src="<core:url value="/resources/js/libs/jquery-3.5.1.min.js" />"></script>
+        <script type="text/javascript" src="<core:url value="/resources/js/libs/jquery.validate-1.19.2.min.js" />"></script>
         <script type="text/javascript" src="<core:url value="/resources/js/libs/jquery.loading-overlay-2.1.7.min.js" />"></script>
 
         <script type="text/javascript" src="<core:url value="/resources/js/home.js" />"></script>
