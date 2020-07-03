@@ -1,51 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="./parciales/header.jsp" />
-<jsp:include page="./parciales/navegacion.jsp" />
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <!-- Codificaci贸n de Caracteres -->
+        <meta charset="UTF-8">
+        
+        <!-- Configuraci贸n inicial del ancho y escalas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- T铆tulo -->
+        <title>Detta</title>
+        
+        <!-- Hojas de Estilo -->
+        <link rel="stylesheet" href="<core:url value="/resources/css/login.css" />" type="text/css">
+    </head>
+    <body>
 
-        <!-- Contenido -->
-        <div class="container my-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 col-12">
-                    <div class="card">
-                        <div class="card-header">Profesionales</div>
-                        <div class="card-body">
-                            <div class="table-responsive-md">
-                                <table class="table table-hover table-striped">
-                                    <caption class="text-right mr-2">Total registros: ${ profesionales != null ? profesionales.size() : '0' }</caption>
-                                    <thead>
-                                        <tr class="table-info">
-                                            <th scope="col">#</th>
-                                            <th scope="col">Nombre</th>
-                                            <th scope="col">Tel閒ono</th>
-                                            <th scope="col">Correo Electr髇ico</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    <core:choose>
-                                        <core:when test="${ not empty profesionales }">
-                                            <core:forEach items="${ profesionales }" begin="0" end="5" var="profesional">
-                                            <tr>
-                                                <th scope="row">${ profesional.getId() }</th>
-                                                <td>${ profesional.getNombre() }</td>
-                                                <td>${ profesional.getTelefono() }</td>
-                                                <td>${ profesional.getEmail() }</td>
-                                            </tr>
-                                            </core:forEach>
-                                        </core:when>
-
-                                        <core:otherwise>
-                                            <tr>
-                                                <td class="text-center" colspan="4">No hay registros</td>
-                                            </tr>
-                                        </core:otherwise>
-                                    </core:choose>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        <div class="contenedor">
+            <h1>detta</h1>
+            
+            <form method="post">
+                <core:if test="${ not empty error }">
+                <div class="alerta">${ error }</div>
+                </core:if>
+                <div class="otro-contenedor">
+                    <input type="email" id="email" name="email" placeholder="Correo electr贸nico" autocomplete="email" required>
+                    <input type="password" id="password" name="password" placeholder="Contrase帽a" required>
                 </div>
-            </div>
+
+                <button type="submit">Iniciar Sesi贸n</button>
+            </form>
         </div>
-<jsp:include page="./parciales/footer.jsp" />
+
+        <!-- JavaScripts -->
+        <script type="text/javascript" src="<core:url value="/resources/js/libs/jquery-3.5.1.min.js" />"></script>
+        <script type="text/javascript" src="<core:url value="/resources/js/libs/jquery.loading-overlay-2.1.7.min.js" />"></script>
+
+        <script type="text/javascript" src="<core:url value="/resources/js/home.js" />"></script>
+    </body>
+</html>
