@@ -18,7 +18,7 @@ import cl.rhacs.detta.repositorios.ProfesionalesRepository;
 /**
  * Servlet implementation class PanelController
  */
-@WebServlet(name = "PanelController", urlPatterns = {"/panel"})
+@WebServlet(name = "PanelController", urlPatterns = { "/panel" })
 public class PanelController extends HttpServlet {
 
     // Constantes
@@ -48,20 +48,20 @@ public class PanelController extends HttpServlet {
 
     // Métodos
     // -----------------------------------------------------------------------------------------
-    
+
     @Override
     public void init() throws ServletException {
         // Obtener contexto
         ServletContext contexto = this.getServletContext();
-        
+
         // Obtener información de configuración
         String url = contexto.getInitParameter("jdbcURL");
         String user = contexto.getInitParameter("jdbcUsername");
         String pass = contexto.getInitParameter("jdbcPassword");
-        
+
         // Inicializar objeto de conexión
         Conexion conexion = Conexion.getInstance(url, user, pass);
-        
+
         // Inicializar repositorios
         profesionalesRepository = new ProfesionalesRepository(conexion);
         empresasRepository = new EmpresasRepository(conexion);
@@ -88,10 +88,14 @@ public class PanelController extends HttpServlet {
             throws ServletException, IOException {
         // Obtener objeto de sesión
         HttpSession sesion = request.getSession();
-        
+
         // Verificar inicio de sesión
-        if(sesion.getAttribute("loggedIn") != null && ((boolean) sesion.getAttribute("loggedIn"))) {
-            
+        if (sesion.getAttribute("loggedIn") != null && ((boolean) sesion.getAttribute("loggedIn"))) {
+            // Insertar título
+            request.setAttribute("titulo", "Dashboard");
+
+            // Mostrar contenido
+            request.getRequestDispatcher("WEB-INF/panel.jsp").forward(request, response);
         } else {
             // Insertar error en la sesión
             sesion.setAttribute("loginError", "Debe iniciar sesión para poder acceder al panel");
