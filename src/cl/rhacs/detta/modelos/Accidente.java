@@ -9,34 +9,28 @@ public class Accidente {
     // Atributos
     // -----------------------------------------------------------------------------------------
 
-    /** Identificador numérico del {@link Accidente} en la base de datos */
+    /** Identificador numérico del {@link Accidente} en base de datos */
     private int id;
 
-    /** Fecha en la que ocurrió el {@link Accidente} */
+    /** Fecha en que ocurrió el {@link Accidente} */
     private LocalDate fecha;
 
-    /** Hora en la que ocurrió el {@link Accidente} */
+    /** Hora en que ocurrió el {@link Accidente} */
     private LocalTime hora;
 
-    /** Dirección en la que ocurrió el {@link Accidente} */
+    /** Dirección del {@link Accidente} */
     private String direccion;
 
-    /**
-     * Lugar en el que ocurrió el {@link Accidente} (nombre de la sección, edificio,
-     * área, etc.)
-     */
+    /** Lugar del {@link Accidente} (nombre de la sección, edificio, área, etc.) */
     private String lugar;
 
-    /**
-     * Qué estaba haciendo el trabajador al momento o justo antes del
-     * {@link Accidente}
-     */
+    /** Qué estaba haciendo el trabajador al momento del {@link Accidente} */
     private String circunstancia;
 
     /** Qué pasó o cómo ocurrió el {@link Accidente} */
     private String detalles;
 
-    /** Clasificación del Accidente (Leve, Grave, Fatal, Otro) */
+    /** Clasificación del {@link Accidente} (Leve, Grave, Fatal, Otro) */
     private String clasificacion;
 
     /** Tipo de {@link Accidente} (Trabajo, Trayecto) */
@@ -48,14 +42,17 @@ public class Accidente {
      */
     private String medioPrueba;
 
-    /** Fecha en la que se registró el {@link Accidente} */
-    private LocalDateTime registro;
-
     /**
-     * Fecha en la que se actualizó por última vez la información del
-     * {@link Accidente}
+     * Identificador numérico de la {@link Empresa} a la que pertenece el trabajador
+     * accidentado
      */
-    private LocalDateTime actualizacion;
+    private int empresaId;
+
+    /** Fecha en que se registró el {@link Accidente} en el sistema */
+    private LocalDateTime fechaRegistro;
+
+    /** Última fecha en que se modificó la información del {@link Accidente} */
+    private LocalDateTime fechaActualizacion;
 
     // Constructores
     // -----------------------------------------------------------------------------------------
@@ -107,7 +104,7 @@ public class Accidente {
     }
 
     /**
-     * @return la circunstancia en la que ocurrió
+     * @return la circunstancia
      * @see Accidente#circunstancia
      */
     public final String getCircunstancia() {
@@ -138,7 +135,7 @@ public class Accidente {
     }
 
     /**
-     * @return el medio de prueba acreditador
+     * @return el medio de prueba
      * @see Accidente#medioPrueba
      */
     public final String getMedioPrueba() {
@@ -146,17 +143,24 @@ public class Accidente {
     }
 
     /**
-     * @return la fecha de registro
+     * @return el identificador de la {@link Empresa}
      */
-    public final LocalDateTime getRegistro() {
-        return registro;
+    public final int getEmpresaId() {
+        return empresaId;
     }
 
     /**
-     * @return la última fecha de actualización
+     * @return la fecha de registro en el sistema
      */
-    public final LocalDateTime getActualizacion() {
-        return actualizacion;
+    public final LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    /**
+     * @return la última fecha de modificación
+     */
+    public final LocalDateTime getFechaActualizacion() {
+        return fechaActualizacion;
     }
 
     // Setters
@@ -238,17 +242,24 @@ public class Accidente {
     }
 
     /**
-     * @param registro la fecha de inserción a establecer
+     * @param empresaId el identificador de la {@link Empresa} a establecer
      */
-    public final void setRegistro(LocalDateTime registro) {
-        this.registro = registro;
+    public final void setEmpresaId(int empresaId) {
+        this.empresaId = empresaId;
     }
 
     /**
-     * @param actualizacion la fecha de actualización a establecer
+     * @param fechaRegistro la fecha de registro en el sistema a establecer
      */
-    public final void setActualizacion(LocalDateTime actualizacion) {
-        this.actualizacion = actualizacion;
+    public final void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    /**
+     * @param fechaActualizacion la última fecha de modificación a establecer
+     */
+    public final void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
     }
 
     // Herencias (Object)
@@ -266,8 +277,6 @@ public class Accidente {
 
     @Override
     public boolean equals(Object obj) {
-        Accidente other = (Accidente) obj;
-
         if (this == obj)
             return true;
 
@@ -276,6 +285,8 @@ public class Accidente {
 
         if (getClass() != obj.getClass())
             return false;
+
+        Accidente other = (Accidente) obj;
 
         if (id != other.id)
             return false;
@@ -287,8 +298,8 @@ public class Accidente {
     public String toString() {
         return "Accidente [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", direccion=" + direccion + ", lugar="
                 + lugar + ", circunstancia=" + circunstancia + ", detalles=" + detalles + ", clasificacion="
-                + clasificacion + ", tipo=" + tipo + ", medioPrueba=" + medioPrueba + ", registro=" + registro
-                + ", actualizacion=" + actualizacion + "]";
+                + clasificacion + ", tipo=" + tipo + ", medioPrueba=" + medioPrueba + ", fechaRegistro=" + fechaRegistro
+                + ", fechaActualizacion=" + fechaActualizacion + "]";
     }
 
 }

@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,9 +17,16 @@ import cl.rhacs.detta.repositorios.interfaces.IAccidentesRepository;
 
 public class AccidentesRepository implements IAccidentesRepository {
 
+    // Constantes
+    // -----------------------------------------------------------------------------------------
+
+    /** Nombre de la tabla en la base de datos */
+    private final String TABLA = "detta_accidentes";
+
     // Atributos
     // -----------------------------------------------------------------------------------------
 
+    /** Objeto {@link Conexion} con los métodos de conexión a la base de datos */
     private Conexion conexion;
 
     // Constructores
@@ -38,6 +44,12 @@ public class AccidentesRepository implements IAccidentesRepository {
     // Métodos
     // -----------------------------------------------------------------------------------------
 
+    /**
+     * Extrae un {@link Accidente} de un {@link ResultSet}
+     * 
+     * @param rs objeto {@link ResultSet} con la información a extraer
+     * @return un objeto {@link Accidente}
+     */
     private Accidente extraerAccidente(ResultSet rs) {
         // Crear respuesta
         Accidente accidente = new Accidente();
@@ -54,8 +66,8 @@ public class AccidentesRepository implements IAccidentesRepository {
             accidente.setClasificacion(rs.getString("clasificacion"));
             accidente.setTipo(rs.getString("tipo"));
             accidente.setMedioPrueba(rs.getString("medio_prueba"));
-            accidente.setRegistro(rs.getTimestamp("registro").toLocalDateTime());
-            accidente.setActualizacion(rs.getTimestamp("actualizacion").toLocalDateTime());
+            accidente.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
+            accidente.setFechaActualizacion(rs.getTimestamp("fecha_actualizacion").toLocalDateTime());
         } catch (SQLException e) {
             Utilidades.extraerError("AccidentesRepository", "extraerAccidente", e);
         }
@@ -67,7 +79,7 @@ public class AccidentesRepository implements IAccidentesRepository {
     // -----------------------------------------------------------------------------------------
 
     @Override
-    public boolean agregarRegistro(Object objeto, int padreId) {
+    public boolean agregarRegistro(Object objeto) {
         // Crear respuesta
         boolean registroAgregado = false;
 
@@ -78,10 +90,9 @@ public class AccidentesRepository implements IAccidentesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "INSERT INTO accidentes (fecha, hora, direccion, lugar, circunstancia"
-                        + ", detalles, clasificacion, tipo, medio_prueba, registro, actualizacion"
-                        + "empresa_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, "
-                        + "CURRENT_TIMESTAMP, ?)";
+                String sql = "INSERT INTO " + TABLA + " (fecha, hora, direccion, lugar, circunstancia, "
+                        + "detalles, clasificacion, tipo, medio_prueba, fecha_registro, fecha_actualizacion, "
+                        + "empresa_id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)";
 
                 // Convertir objeto
                 Accidente accidente = (Accidente) objeto;
@@ -89,7 +100,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setDate(1, Date.valueOf(accidente.getFecha()));
                 ps.setString(2, accidente.getHora().format(DateTimeFormatter.ofPattern("HH:mm")));
                 ps.setString(3, accidente.getDireccion());
@@ -99,7 +110,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 ps.setString(7, accidente.getClasificacion());
                 ps.setString(8, accidente.getTipo());
                 ps.setString(9, accidente.getMedioPrueba());
-                ps.setInt(10, padreId);
+                ps.setInt(10, accidente.getEmpresaId());
 
                 // Ejecutar consulta
                 registroAgregado = ps.executeUpdate() > 0;
@@ -122,13 +133,12 @@ public class AccidentesRepository implements IAccidentesRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar conexión
+        // Verificar conexion
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, "
-                        + "clasificacion, tipo, medio_prueba, registro, actualizacion FROM "
-                        + "accidentes ORDER BY actualizacion DESC";
+                String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, clasificacion, "
+                        + "tipo, medio_prueba, fecha_registro, fecha_actualizacion, empresa_id FROM " + TABLA;
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -145,7 +155,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                     do {
                         Accidente accidente = extraerAccidente(rs);
 
-                        // Agregar accidente al listado
+                        // Agregar al listado
                         accidentes.add(accidente);
                     } while (rs.next());
                 }
@@ -168,26 +178,26 @@ public class AccidentesRepository implements IAccidentesRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hay conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, "
-                        + "clasificacion, tipo, medio_prueba, registro, actualizacion FROM "
-                        + "accidentes WHERE id = ?";
+                String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, clasificacion, "
+                        + "tipo, medio_prueba, fecha_registro, fecha_actualizacion, empresa_id FROM " + TABLA
+                        + " WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setInt(1, id);
 
                 // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
 
-                // Verificar si hay resultados
+                // Verificar si hay resultado
                 if (rs.next()) {
-                    // Extraer accidente
+                    // Extraer resultado
                     accidente = extraerAccidente(rs);
                 }
             } catch (SQLException e) {
@@ -202,8 +212,8 @@ public class AccidentesRepository implements IAccidentesRepository {
     }
 
     @Override
-    public List<Accidente> buscarPorFecha(LocalDate fecha) {
-        // Crear listado
+    public List<Accidente> buscarPorEmpresaId(int empresaId) {
+        // Crear objeto
         List<Accidente> accidentes = null;
 
         // Conectar
@@ -213,20 +223,20 @@ public class AccidentesRepository implements IAccidentesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, "
-                        + "clasificacion, tipo, medio_prueba, registro, actualizacion FROM "
-                        + "accidentes WHERE fecha = ?";
+                String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, clasificacion, "
+                        + "tipo, medio_prueba, fecha_registro, fecha_actualizacion, empresa_id FROM " + TABLA
+                        + " WHERE empresa_id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
-                ps.setDate(1, Date.valueOf(fecha));
+                // Poblar consulta
+                ps.setInt(1, empresaId);
 
                 // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
 
-                // Verificar si hay resultados
+                // Verificar si hay resultado
                 if (rs.next()) {
                     // Inicializar listado
                     accidentes = new ArrayList<>();
@@ -235,61 +245,12 @@ public class AccidentesRepository implements IAccidentesRepository {
                     do {
                         Accidente accidente = extraerAccidente(rs);
 
-                        // Agregar accidente al listado
+                        // Agregar a listado
                         accidentes.add(accidente);
                     } while (rs.next());
                 }
             } catch (SQLException e) {
-                Utilidades.extraerError("AccidentesRepository", "buscarPorFecha", e);
-            } finally {
-                // Desconectar
-                conexion.desconectar();
-            }
-        }
-
-        return accidentes;
-    }
-
-    @Override
-    public List<Accidente> buscarPor(String campo, String valor) {
-        // Crear listado
-        List<Accidente> accidentes = null;
-
-        // Conectar
-        Connection con = conexion.conectar();
-
-        // Verificar conexion
-        if (con != null) {
-            try {
-                // Definir consulta
-                String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, "
-                        + "clasificacion, tipo, medio_prueba, registro, actualizacion FROM accidentes WHERE ? = ?";
-
-                // Preparar consulta
-                PreparedStatement ps = con.prepareStatement(sql);
-
-                // Llenar consulta
-                ps.setString(1, campo);
-                ps.setString(2, valor);
-
-                // Ejecutar consulta
-                ResultSet rs = ps.executeQuery();
-
-                // Verificar si hay resultados
-                if (rs.next()) {
-                    // Inicializar listado
-                    accidentes = new ArrayList<>();
-
-                    // Extraer resultados
-                    do {
-                        Accidente accidente = extraerAccidente(rs);
-
-                        // Insertar accidente en el listado
-                        accidentes.add(accidente);
-                    } while (rs.next());
-                }
-            } catch (SQLException e) {
-                Utilidades.extraerError("AccidentesRepository", "buscarPor", e);
+                Utilidades.extraerError("AccidentesRepository", "buscarPorEmpresaId", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -307,13 +268,13 @@ public class AccidentesRepository implements IAccidentesRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hay conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "UPDATE accidentes SET fecha = ?, hora = ?, direccion = ?, lugar = ?, "
-                        + "circunstancia = ?, detalles = ?, clasificacion = ?, tipo = ? "
-                        + "medio_prueba = ?, actualizacion = CURRENT_TIMESTAMP WHERE id = ?";
+                String sql = "UPDATE " + TABLA + " SET fecha = ?, hora = ?, direccion = ?, lugar = ?, "
+                        + "circunstancia = ?, detalles = ?, clasificacion = ?, tipo = ?, medio_prueba = ?, "
+                        + "fecha_actualizacion = CURRENT_TIMESTAMP, empresa_id = ? WHERE id = ?";
 
                 // Convertir objeto
                 Accidente accidente = (Accidente) objeto;
@@ -321,7 +282,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setDate(1, Date.valueOf(accidente.getFecha()));
                 ps.setString(2, accidente.getHora().format(DateTimeFormatter.ofPattern("HH:mm")));
                 ps.setString(3, accidente.getDireccion());
@@ -331,7 +292,8 @@ public class AccidentesRepository implements IAccidentesRepository {
                 ps.setString(7, accidente.getClasificacion());
                 ps.setString(8, accidente.getTipo());
                 ps.setString(9, accidente.getMedioPrueba());
-                ps.setInt(10, accidente.getId());
+                ps.setInt(10, accidente.getEmpresaId());
+                ps.setInt(11, accidente.getId());
 
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
@@ -358,12 +320,12 @@ public class AccidentesRepository implements IAccidentesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "DELETE FROM accidentes WHERE id = ?";
+                String sql = "DELETE FROM " + TABLA + " WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setInt(1, id);
 
                 // Ejecutar consulta
