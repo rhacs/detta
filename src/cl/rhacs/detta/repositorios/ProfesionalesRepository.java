@@ -67,7 +67,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     // -----------------------------------------------------------------------------------------
 
     @Override
-    public boolean agregarRegistro(Profesional profesional) {
+    public boolean agregarRegistro(Object objeto) {
         // Crear respuesta
         boolean registroAgregado = false;
 
@@ -81,6 +81,9 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 String sql = "INSERT INTO " + TABLA + " (nombre, email, telefono, estado_contrato, "
                         + "password) VALUES (?, ?, ?, ?, ?)";
 
+                // Convertir objeto
+                Profesional profesional = (Profesional) objeto;
+                
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -105,9 +108,9 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     @Override
-    public List<Profesional> buscarTodos() {
+    public List<Object> buscarTodos() {
         // Crear listado
-        List<Profesional> profesionales = null;
+        List<Object> profesionales = null;
 
         // Conectar
         Connection con = conexion.conectar();
@@ -229,7 +232,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     @Override
-    public boolean actualizarRegistro(Profesional profesional) {
+    public boolean actualizarRegistro(Object objeto) {
         // Crear respuesta
         boolean registroActualizado = false;
 
@@ -243,6 +246,9 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 String sql = "UPDATE " + TABLA + " SET nombre = ?, email = ?, telefono = ?, estado_contrato = ?"
                         + ", password = ? WHERE id = ?";
 
+                // Convertir objeto
+                Profesional profesional = (Profesional) objeto;
+                
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 

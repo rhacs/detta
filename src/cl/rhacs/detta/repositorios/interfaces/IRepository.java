@@ -11,7 +11,7 @@ public interface IRepository {
      * @return {@code true} si el registro fue agregado, {@code false} en cualquier
      *         otro caso
      */
-    public boolean agregarRegistro(Object objeto, int padreId);
+    public boolean agregarRegistro(Object objeto);
 
     /**
      * Recupera todos los registros almacenados en el repositorio
