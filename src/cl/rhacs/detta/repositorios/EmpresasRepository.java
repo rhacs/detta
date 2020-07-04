@@ -14,9 +14,18 @@ import cl.rhacs.detta.repositorios.interfaces.IEmpresasRepository;
 
 public class EmpresasRepository implements IEmpresasRepository {
 
+    // Constantes
+    // -----------------------------------------------------------------------------------------
+
+    /** Nombre de la tabla en la base de datos */
+    private final String TABLA = "detta_empresas";
+
     // Atributos
     // -----------------------------------------------------------------------------------------
 
+    /**
+     * Objeto {@link Conexion} con
+     */
     private Conexion conexion;
 
     // Constructores
@@ -56,8 +65,9 @@ public class EmpresasRepository implements IEmpresasRepository {
             empresa.setTrabajadores(rs.getInt("trabajadores"));
             empresa.setTipo(rs.getString("tipo"));
             empresa.setPassword(rs.getString("password"));
-            empresa.setRegistro(rs.getTimestamp("registro").toLocalDateTime());
-            empresa.setActualizacion(rs.getTimestamp("actualizacion").toLocalDateTime());
+            empresa.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
+            empresa.setFechaActualizacion(rs.getTimestamp("fecha_actualizacion").toLocalDateTime());
+            empresa.setProfesionalId(rs.getInt("profesional_id"));
         } catch (SQLException e) {
             Utilidades.extraerError("EmpresasRepository", "extraerEmpresa", e);
         }
@@ -69,20 +79,20 @@ public class EmpresasRepository implements IEmpresasRepository {
     // -----------------------------------------------------------------------------------------
 
     @Override
-    public boolean agregarRegistro(Object objeto, int padreId) {
+    public boolean agregarRegistro(Object objeto) {
         // Crear respuesta
         boolean registroAgregado = false;
 
-        // Realizar conexión
+        // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hubo conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "INSERT INTO detta_empresas (nombre, rut, direccion, telefono, email, giro, "
-                        + "trabajadores, tipo, password, registro, actualizacion, profesional_id) VALUES (?, "
-                        + "?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)";
+                String sql = "INSERT INTO " + TABLA + " (nombre, rut, direccion, telefono, email, "
+                        + "giro, trabajadores, tipo, password, fecha_registro, fecha_actualizacion, "
+                        + "profesional_id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)";
 
                 // Convertir objeto
                 Empresa empresa = (Empresa) objeto;
@@ -90,7 +100,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Insertar datos en la consulta
+                // Poblar consulta
                 ps.setString(1, empresa.getNombre());
                 ps.setString(2, empresa.getRut());
                 ps.setString(3, empresa.getDireccion());
@@ -100,10 +110,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 ps.setInt(7, empresa.getTrabajadores());
                 ps.setString(8, empresa.getTipo());
                 ps.setString(9, empresa.getPassword());
-                ps.setInt(10, padreId);
-
-                // Insertar registro en la base de datos
-                registroAgregado = ps.executeUpdate() > 0;
+                ps.setInt(10, empresa.getProfesionalId());
             } catch (SQLException e) {
                 Utilidades.extraerError("EmpresasRepository", "agregarRegistro", e);
             } finally {
@@ -117,18 +124,18 @@ public class EmpresasRepository implements IEmpresasRepository {
 
     @Override
     public List<Object> buscarTodos() {
-        // Crear respuesta
+        // Crear listado
         List<Object> empresas = null;
 
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hubo conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
-                        + "tipo, password, registro, actualizacion FROM detta_empresas";
+                        + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA;
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -136,16 +143,16 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
 
-                // Verificar si hubo al menos un resultado
+                // Verificar si hay resultados
                 if (rs.next()) {
-                    // Inicializar el listado
+                    // Inicializar listado
                     empresas = new ArrayList<>();
 
-                    // Extraer todos los resultados
+                    // Extraer resultados
                     do {
                         Empresa empresa = extraerEmpresa(rs);
 
-                        // Ingresar empresa al listado
+                        // Agregar empresa al listado
                         empresas.add(empresa);
                     } while (rs.next());
                 }
@@ -168,22 +175,26 @@ public class EmpresasRepository implements IEmpresasRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hay conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
-                        + "tipo, password, registro, actualizacion FROM detta_empresas WHERE id = ?";
+                        + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA
+                        + " id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Obtener resultados
+                // Poblar consulta
+                ps.setInt(1, id);
+
+                // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
 
                 // Verificar si hay resultados
                 if (rs.next()) {
-                    // Extraer empresa
+                    // Extraer resultado
                     empresa = extraerEmpresa(rs);
                 }
             } catch (SQLException e) {
@@ -209,13 +220,14 @@ public class EmpresasRepository implements IEmpresasRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores,"
-                        + " tipo, password, registro, actualizacion FROM detta_empresas WHERE email = ?";
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
+                        + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA
+                        + " email = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setString(1, email);
 
                 // Ejecutar consulta
@@ -223,7 +235,7 @@ public class EmpresasRepository implements IEmpresasRepository {
 
                 // Verificar si hay resultados
                 if (rs.next()) {
-                    // Extraer empresa
+                    // Extraer resultado
                     empresa = extraerEmpresa(rs);
                 }
             } catch (SQLException e) {
@@ -245,17 +257,18 @@ public class EmpresasRepository implements IEmpresasRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hay conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
-                        + "tipo, password, registro, actualizacion FROM detta_empresas WHERE rut = ?";
+                        + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA
+                        + " rut = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setString(1, rut);
 
                 // Ejecutar consulta
@@ -263,6 +276,7 @@ public class EmpresasRepository implements IEmpresasRepository {
 
                 // Verificar si hay resultados
                 if (rs.next()) {
+                    // Extraer resultado
                     empresa = extraerEmpresa(rs);
                 }
             } catch (SQLException e) {
@@ -277,54 +291,6 @@ public class EmpresasRepository implements IEmpresasRepository {
     }
 
     @Override
-    public List<Empresa> buscarPorGiro(String giro) {
-        // Crear listado
-        List<Empresa> empresas = null;
-
-        // Conectar
-        Connection con = conexion.conectar();
-
-        // Verificar si hay conexión
-        if (con != null) {
-            try {
-                // Definir consulta
-                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
-                        + "tipo, password, registro, actualizacion FROM detta_empresas WHERE giro LIKE ?";
-
-                // Preparar consulta
-                PreparedStatement ps = con.prepareStatement(sql);
-
-                // Llenar consulta
-                ps.setString(1, '%' + giro + '%');
-
-                // Ejecutar consulta
-                ResultSet rs = ps.executeQuery();
-
-                // Verificar si hay resultados
-                if (rs.next()) {
-                    // Inicializar listado
-                    empresas = new ArrayList<>();
-
-                    // Extraer resultados
-                    do {
-                        Empresa empresa = extraerEmpresa(rs);
-
-                        // Agregar empresa al listado
-                        empresas.add(empresa);
-                    } while (rs.next());
-                }
-            } catch (SQLException e) {
-                Utilidades.extraerError("EmpresasRepository", "buscarPorGiro", e);
-            } finally {
-                // Desconectar
-                conexion.desconectar();
-            }
-        }
-
-        return empresas;
-    }
-
-    @Override
     public boolean actualizarRegistro(Object objeto) {
         // Crear respuesta
         boolean registroActualizado = false;
@@ -332,12 +298,13 @@ public class EmpresasRepository implements IEmpresasRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hay conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "UPDATE detta_empresas SET nombre = ?, rut = ?, direccion = ?, telefono = ?, email = ?, "
-                        + "giro = ?, password = ?, trabajadores = ?, tipo = ?, actualizacion = CURRENT_TIMESTAMP WHERE id = ?";
+                String sql = "UPDATE " + TABLA + " SET nombre = ?, rut = ?, direccion = ?, telefono = ?, "
+                        + "email = ?, giro = ?, trabajadores = ?, tipo = ?, password = ?, fecha_actualizar = "
+                        + "CURRENT_TIMESTAMP, profesional_id = ? WHERE id = ?";
 
                 // Convertir objeto
                 Empresa empresa = (Empresa) objeto;
@@ -345,7 +312,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar valores de la consulta
+                // Poblar consulta
                 ps.setString(1, empresa.getNombre());
                 ps.setString(2, empresa.getRut());
                 ps.setString(3, empresa.getDireccion());
@@ -354,11 +321,14 @@ public class EmpresasRepository implements IEmpresasRepository {
                 ps.setString(6, empresa.getGiro());
                 ps.setInt(7, empresa.getTrabajadores());
                 ps.setString(8, empresa.getTipo());
+                ps.setString(9, empresa.getPassword());
+                ps.setInt(10, empresa.getProfesionalId());
+                ps.setInt(11, empresa.getId());
 
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                Utilidades.extraerError("EmpresasRepository", "actualizaRegistro", e);
+                Utilidades.extraerError("EmpresasRepository", "actualizarRegistro", e);
             } finally {
                 // Desconectar
                 conexion.desconectar();
@@ -376,16 +346,16 @@ public class EmpresasRepository implements IEmpresasRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hay conexión
+        // Verificar conexion
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "DELETE FROM empresas WHERE id = ?";
+                String sql = "DELETE FROM " + TABLA + " WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Rellenar consulta
+                // Poblar consulta
                 ps.setInt(1, id);
 
                 // Ejecutar consulta

@@ -7,10 +7,10 @@ public class Empresa {
     // Atributos
     // -----------------------------------------------------------------------------------------
 
-    /** Identificador numérico de la {@link Empresa} en la base de datos */
+    /** Identificador numérico de la {@link Empresa} */
     private int id;
 
-    /** Nombre o razón social de la {@link Empresa} */
+    /** Nombre o Razón Social de la {@link Empresa} */
     private String nombre;
 
     /** Rol Único Tributario de la {@link Empresa} */
@@ -25,10 +25,10 @@ public class Empresa {
     /** Correo electrónico de la {@link Empresa} */
     private String email;
 
-    /** Actividad económica principal de la {@link Empresa} */
+    /** Giro o Actividad Económica de la {@link Empresa} */
     private String giro;
 
-    /** Cantidad de trabajadores de la {@link Empresa} */
+    /** Número total de trabajadores de la {@link Empresa} */
     private int trabajadores;
 
     /**
@@ -37,17 +37,22 @@ public class Empresa {
      */
     private String tipo;
 
-    /** Contraseña de inicio de sesión de la {@link Empresa} */
+    /** Contraseña de Acceso de la {@link Empresa} */
     private String password;
 
-    /** Fecha en la cual la {@link Empresa} fue registrada en el sistema */
-    private LocalDateTime registro;
+    /**
+     * Identificador numérico del {@link Profesional} que está a cargo de la
+     * {@link Empresa}
+     */
+    private int profesionalId;
+
+    /** Fecha en la que la {@link Empresa} se registró en el sistema */
+    private LocalDateTime fechaRegistro;
 
     /**
-     * Fecha en la cual la información de la {@link Empresa} fue actualizada por
-     * última vez
+     * Última fecha en la que la información de la {@link Empresa} fue actualizada
      */
-    private LocalDateTime actualizacion;
+    private LocalDateTime fechaActualizacion;
 
     // Constructores
     // -----------------------------------------------------------------------------------------
@@ -70,7 +75,7 @@ public class Empresa {
     }
 
     /**
-     * @return la razón social
+     * @return el nombre o razón social
      */
     public final String getNombre() {
         return nombre;
@@ -105,46 +110,53 @@ public class Empresa {
     }
 
     /**
-     * @return la actividad económica
+     * @return el giro o actividad económica
      */
     public final String getGiro() {
         return giro;
     }
 
     /**
-     * @return la cantidad de trabajadores
+     * @return la cantidad total de trabajadores
      */
     public final int getTrabajadores() {
         return trabajadores;
     }
 
     /**
-     * @return el tipo de empresa
+     * @return el tipo de la {@link Empresa}
+     * @see Empresa#tipo
      */
     public final String getTipo() {
         return tipo;
     }
-    
+
     /**
-     * @return la contraseña de inicio de sesión
+     * @return la contraseña de acceso
      */
     public final String getPassword() {
         return password;
     }
 
     /**
-     * @return la fecha en la cual la {@link Empresa} fue registrada
+     * @return el identificador numérico del {@link Profesional} a cargo
      */
-    public final LocalDateTime getRegistro() {
-        return registro;
+    public final int getProfesionalId() {
+        return profesionalId;
     }
 
     /**
-     * @return la fecha en la cual la información de la {@link Empresa} fue
-     *         modificada por última vez
+     * @return la fecha en que se registró
      */
-    public final LocalDateTime getActualizacion() {
-        return actualizacion;
+    public final LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    /**
+     * @return la última fecha en la que la información se actualizó
+     */
+    public final LocalDateTime getFechaActualizacion() {
+        return fechaActualizacion;
     }
 
     // Setters
@@ -158,7 +170,7 @@ public class Empresa {
     }
 
     /**
-     * @param nombre la razón social a establecer
+     * @param nombre el nombre o razón social a establecer
      */
     public final void setNombre(String nombre) {
         this.nombre = nombre;
@@ -172,7 +184,7 @@ public class Empresa {
     }
 
     /**
-     * @param direccion la dirección completa a establecer
+     * @param direccion la dirección a establecer
      */
     public final void setDireccion(String direccion) {
         this.direccion = direccion;
@@ -193,51 +205,57 @@ public class Empresa {
     }
 
     /**
-     * @param giro la actividad económica a establecer
+     * @param giro el giro o actividad económica a establecer
      */
     public final void setGiro(String giro) {
         this.giro = giro;
     }
 
     /**
-     * @param trabajadores la cantidad de trabajadores a establecer
+     * @param trabajadores la cantidad total de trabajadores a establecer
      */
     public final void setTrabajadores(int trabajadores) {
         this.trabajadores = trabajadores;
     }
 
     /**
-     * @param tipo el tipo de {@link Empresa} a establecer
+     * @param tipo el tipo a establecer
      * @see Empresa#tipo
      */
     public final void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
+
     /**
-     * @param password la contraseña de inicio de sesión a establecer
+     * @param password la contraseña de acceso a establecer
      */
     public final void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * @param registro la fecha en la que la {@link Empresa} fue agregada a la base
-     *                 de datos
+     * @param profesionalId el identificador numérico del {@link Profesional} a
+     *                      establecer
      */
-    public final void setRegistro(LocalDateTime registro) {
-        this.registro = registro;
+    public final void setProfesionalId(int profesionalId) {
+        this.profesionalId = profesionalId;
     }
 
     /**
-     * @param actualizacion la fecha en la que la información de la {@link Empresa}
-     *                      fue modificada por última vez
+     * @param fechaRegistro la fecha de registro a establecer
      */
-    public final void setActualizacion(LocalDateTime actualizacion) {
-        this.actualizacion = actualizacion;
+    public final void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
-    // Herencias (Objeto)
+    /**
+     * @param fechaActualizacion la última fecha de edición a establecer
+     */
+    public final void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    // Herencias (Object)
     // -----------------------------------------------------------------------------------------
 
     @Override
@@ -245,17 +263,15 @@ public class Empresa {
         final int prime = 31;
         int result = 1;
 
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + id;
         result = prime * result + ((rut == null) ? 0 : rut.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
 
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        Empresa other = (Empresa) obj;
-
         if (this == obj)
             return true;
 
@@ -263,6 +279,14 @@ public class Empresa {
             return false;
 
         if (getClass() != obj.getClass())
+            return false;
+
+        Empresa other = (Empresa) obj;
+
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
             return false;
 
         if (id != other.id)
@@ -274,12 +298,6 @@ public class Empresa {
         } else if (!rut.equals(other.rut))
             return false;
 
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-
         return true;
     }
 
@@ -287,7 +305,8 @@ public class Empresa {
     public String toString() {
         return "Empresa [id=" + id + ", nombre=" + nombre + ", rut=" + rut + ", direccion=" + direccion + ", telefono="
                 + telefono + ", email=" + email + ", giro=" + giro + ", trabajadores=" + trabajadores + ", tipo=" + tipo
-                + ", registro=" + registro + ", actualizacion=" + actualizacion + "]";
+                + ", profesionalId=" + profesionalId + ", fechaRegistro=" + fechaRegistro + ", fechaActualizacion="
+                + fechaActualizacion + "]";
     }
 
 }

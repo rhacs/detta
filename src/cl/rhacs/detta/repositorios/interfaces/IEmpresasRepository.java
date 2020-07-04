@@ -1,7 +1,5 @@
 package cl.rhacs.detta.repositorios.interfaces;
 
-import java.util.List;
-
 import cl.rhacs.detta.modelos.Empresa;
 
 public interface IEmpresasRepository extends IRepository {
@@ -14,15 +12,6 @@ public interface IEmpresasRepository extends IRepository {
      *         otro caso
      */
     public Empresa buscarPorRut(String rut);
-
-    /**
-     * Busca en el repositorio las {@link Empresa}s que tengan el giro especificado
-     * 
-     * @param giro giro a buscar
-     * @return un objeto {@link List} con los resultados obtenidos, {@code null} en
-     *         cualquier otro caso
-     */
-    public List<Empresa> buscarPorGiro(String giro);
 
     /**
      * Busca un registro en el repositorio dado un correo electrónico
