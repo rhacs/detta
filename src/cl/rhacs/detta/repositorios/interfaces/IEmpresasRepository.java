@@ -1,5 +1,7 @@
 package cl.rhacs.detta.repositorios.interfaces;
 
+import java.util.List;
+
 import cl.rhacs.detta.modelos.Empresa;
 
 public interface IEmpresasRepository extends IRepository {
@@ -21,5 +23,15 @@ public interface IEmpresasRepository extends IRepository {
      *         cualquier otro caso
      */
     public Empresa buscarPorEmail(String email);
+
+    /**
+     * Busca en el repositorio los registros que se encuentran bajo la supervisión
+     * del {@link Profesional} indicado
+     * 
+     * @param id identificador del {@link Profesional}
+     * @return un objeto {@link List} con los resultados obtenidos, {@code null} en
+     *         cualquier otro caso
+     */
+    public List<Empresa> buscarPorProfesionalId(int profesionalId);
 
 }

@@ -181,7 +181,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
                         + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA
-                        + " id = ?";
+                        + " WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -263,7 +263,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
                         + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA
-                        + " rut = ?";
+                        + " WHERE rut = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -288,6 +288,55 @@ public class EmpresasRepository implements IEmpresasRepository {
         }
 
         return empresa;
+    }
+
+    @Override
+    public List<Empresa> buscarPorProfesionalId(int profesionalId) {
+        // Crear listado
+        List<Empresa> empresas = null;
+
+        // Conectar
+        Connection con = conexion.conectar();
+
+        // Verificar conexión
+        if (con != null) {
+            try {
+                // Definir consulta
+                String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
+                        + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA
+                        + " WHERE profesional_id = ?";
+
+                // Preparar consulta
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                // Poblar consulta
+                ps.setInt(1, profesionalId);
+
+                // Ejecutar consulta
+                ResultSet rs = ps.executeQuery();
+
+                // Verificar si hay resultados
+                if (rs.next()) {
+                    // Inicializar listado
+                    empresas = new ArrayList<>();
+
+                    // Extraer resultados
+                    do {
+                        Empresa empresa = extraerEmpresa(rs);
+
+                        // Agregar al listado
+                        empresas.add(empresa);
+                    } while (rs.next());
+                }
+            } catch (SQLException e) {
+                Utilidades.extraerError("EmpresasRepository", "buscarPorProfesionalId", e);
+            } finally {
+                // Desconectar
+                conexion.desconectar();
+            }
+        }
+
+        return empresas;
     }
 
     @Override
