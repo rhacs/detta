@@ -13,6 +13,7 @@ Pequeña implementación del ejercicio evolutivo de **Accidentabilidad Laboral**
  - [jQuery v3.5.1](https://jquery.com)
    - [LoadingOverlay v2.1.7](https://gasparesganga.com/labs/jquery-loading-overlay/)
    - [Validator v1.19.2](https://jqueryvalidation.org/)
+   - [JSON in Java v20200518](https://json.org)
  - [Popper.js v1.16.1](https://popper.js.org)
  - [Bootstrap v.4.5.0](https://getbootstrap.com)
  - [FontAwesome (all) v5.13.1](https://fontawesome.com)
