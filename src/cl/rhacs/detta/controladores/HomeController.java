@@ -147,14 +147,19 @@ public class HomeController extends HttpServlet {
 
         // Rol del usuario
         String rol = null;
+        
+        // Identificador del usuario
+        int id = -1;
 
         // Verificar si hay resultado
         if (profesional != null) {
             comparame = profesional.getPassword();
             rol = "profesional";
+            id = profesional.getId();
         } else if (empresa != null) {
             comparame = empresa.getPassword();
             rol = "empresa";
+            id = empresa.getId();
         } else if (email.equals("admin@detta.cl")) {
             comparame = "GWskgZaAUVBVVB7ptdgDV3/lAbp4FJ4vpx/ffMoeDgg=";
             rol = "admin";
@@ -165,6 +170,7 @@ public class HomeController extends HttpServlet {
             // Inicio de sesión correcto
             sesion.setAttribute("loggedIn", true);
             sesion.setAttribute("rol", rol);
+            sesion.setAttribute("uid", id);
 
             // Redireccionar al usuario al panel
             response.sendRedirect(request.getContextPath() + "/panel");
