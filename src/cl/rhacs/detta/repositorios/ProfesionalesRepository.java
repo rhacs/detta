@@ -14,9 +14,16 @@ import cl.rhacs.detta.repositorios.interfaces.IProfesionalesRepository;
 
 public class ProfesionalesRepository implements IProfesionalesRepository {
 
+    // Constantes
+    // -----------------------------------------------------------------------------------------
+
+    /** Nombre de la tabla en la base de datos */
+    private final String TABLA = "detta_profesionales";
+
     // Atributos
     // -----------------------------------------------------------------------------------------
 
+    /** Objeto {@link Conexion} con los métodos de conexión a la base de datos */
     private Conexion conexion;
 
     // Constructores
@@ -46,7 +53,6 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
             profesional.setId(rs.getInt("id"));
             profesional.setNombre(rs.getString("nombre"));
             profesional.setEmail(rs.getString("email"));
-            profesional.setDireccion(rs.getString("direccion"));
             profesional.setTelefono(rs.getString("telefono"));
             profesional.setEstadoContrato(rs.getString("estado_contrato"));
             profesional.setPassword(rs.getString("password"));
@@ -72,8 +78,8 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "INSERT INTO detta_profesionales (nombre, email, direccion, telefono, "
-                        + "estado_contrato, password) VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO " + TABLA + " (nombre, email, telefono, estado_contrato, "
+                        + "password) VALUES (?, ?, ?, ?, ?)";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -81,10 +87,9 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 // Llenar consulta
                 ps.setString(1, profesional.getNombre());
                 ps.setString(2, profesional.getEmail());
-                ps.setString(3, profesional.getDireccion());
-                ps.setString(4, profesional.getTelefono());
-                ps.setString(5, profesional.getEstadoContrato());
-                ps.setString(6, profesional.getPassword());
+                ps.setString(3, profesional.getTelefono());
+                ps.setString(4, profesional.getEstadoContrato());
+                ps.setString(5, profesional.getPassword());
 
                 // Ejecutar consulta
                 registroAgregado = ps.executeUpdate() > 0;
@@ -111,13 +116,12 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM detta_profesionales";
+                String sql = "SELECT id, nombre, email, telefono, estado_contrato, password FROM " + TABLA;
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Obtener resultados
+                // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
 
                 // Verificar si hay resultados
@@ -125,11 +129,11 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                     // Inicializar lista
                     profesionales = new ArrayList<>();
 
-                    // Extraer profesionales
+                    // Extraer resultados
                     do {
                         Profesional profesional = extraerProfesional(rs);
 
-                        // Agregar profesional a la lista
+                        // Agregar profesional al listado
                         profesionales.add(profesional);
                     } while (rs.next());
                 }
@@ -156,19 +160,19 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM detta_profesionales WHERE id = ?";
+                String sql = "SELECT id, nombre, email, telefono, estado_contrato, password FROM " + TABLA
+                        + " WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setInt(1, id);
 
                 // Ejecutar consulta
                 ResultSet rs = ps.executeQuery();
 
-                // Verificar si hubo resultados
+                // Verificar si hay resultados
                 if (rs.next()) {
                     // Extraer profesional
                     profesional = extraerProfesional(rs);
@@ -192,17 +196,17 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         // Conectar
         Connection con = conexion.conectar();
 
-        // Verificar si hubo conexión
+        // Verificar conexión
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM detta_profesionales WHERE email = ?";
+                String sql = "SELECT id, nombre, email, telefono, estado_contrato, password FROM " + TABLA
+                        + " WHERE email = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setString(1, email);
 
                 // Ejecutar consulta
@@ -210,7 +214,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
 
                 // Verificar si hay resultados
                 if (rs.next()) {
-                    // Extraer profesional
+                    // Extraer resultado
                     profesional = extraerProfesional(rs);
                 }
             } catch (SQLException e) {
@@ -225,54 +229,6 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
     }
 
     @Override
-    public List<Profesional> buscarPor(String campo, String valor) {
-        // Crear listado
-        List<Profesional> profesionales = null;
-
-        // Conectar
-        Connection con = conexion.conectar();
-
-        // Verificar conexión
-        if (con != null) {
-            try {
-                // Definir consulta
-                String sql = "SELECT id, nombre, email, direccion, telefono, estado_contrato, "
-                        + "password FROM detta_profesionales WHERE " + campo + " = ?";
-
-                // Preparar consulta
-                PreparedStatement ps = con.prepareStatement(sql);
-
-                // Llenar consulta
-                ps.setString(1, valor);
-
-                // Ejecutar consulta
-                ResultSet rs = ps.executeQuery();
-
-                // Verificar si hay resultados
-                if (rs.next()) {
-                    // Inicializar lista
-                    profesionales = new ArrayList<>();
-
-                    // Extraer profesionales
-                    do {
-                        Profesional profesional = extraerProfesional(rs);
-
-                        // Agregar profesional a la lista
-                        profesionales.add(profesional);
-                    } while (rs.next());
-                }
-            } catch (SQLException e) {
-                Utilidades.extraerError("ProfesionalesRepository", "buscarPor", e);
-            } finally {
-                // Desconectar
-                conexion.desconectar();
-            }
-        }
-
-        return profesionales;
-    }
-
-    @Override
     public boolean actualizarRegistro(Profesional profesional) {
         // Crear respuesta
         boolean registroActualizado = false;
@@ -284,19 +240,19 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "UPDATE detta_profesionales SET nombre = ?, email = ?, direccion = ?, "
-                        + "telefono = ?, estado_contrato = ? WHERE id = ?";
+                String sql = "UPDATE " + TABLA + " SET nombre = ?, email = ?, telefono = ?, estado_contrato = ?"
+                        + ", password = ? WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setString(1, profesional.getNombre());
                 ps.setString(2, profesional.getEmail());
-                ps.setString(3, profesional.getDireccion());
-                ps.setString(4, profesional.getTelefono());
-                ps.setString(5, profesional.getEstadoContrato());
-                ps.setInt(6, profesional.getId());
+                ps.setString(3, profesional.getTelefono());
+                ps.setString(4, profesional.getEstadoContrato());
+                ps.setString(5, profesional.getPassword());
+                ps.setInt(1, profesional.getId());
 
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
@@ -323,12 +279,12 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "DELETE FROM detta_profesionales WHERE id = ?";
+                String sql = "DELETE FROM " + TABLA + " WHERE id = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                // Llenar consulta
+                // Poblar consulta
                 ps.setInt(1, id);
 
                 // Ejecutar consulta

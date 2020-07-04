@@ -7,69 +7,57 @@ import cl.rhacs.detta.modelos.Profesional;
 public interface IProfesionalesRepository {
 
     /**
-     * Agrega un registro {@link Profesional} al repositorio
+     * Agrega un nuevo registro al repositorio
      * 
-     * @param profesional un objeto {@link Profesional} con la información a agregar
+     * @param profesional objeto {@link Profesional} con la información a agregar
      * @return {@code true} si el registro fue agregado, {@code false} en cualquier
      *         otro caso
      */
     public boolean agregarRegistro(Profesional profesional);
 
     /**
-     * Recupera todos los registros almacenados en el repositorio
+     * Busca todos los registros almacenados en el repositorio de
+     * {@link Profesional}es
      * 
-     * @return un objeto {@link List} con todos los registros, {@code null} en
+     * @return un objeto {@link List} con los resultados obtenidos, {@code null} en
      *         cualquier otro caso
      */
     public List<Profesional> buscarTodos();
 
     /**
-     * Recupera un registro del repositorio en base al identificador proporcionado
+     * Busca un registro en el repositorio
      * 
-     * @param id identificador del registro
-     * @return un objeto {@link Profesional} con el registro obtenido, {@code null}
-     *         en cualquier otro caso
+     * @param id identificador a buscar
+     * @return un objeto {@link Profesional} con el resultado, {@code null} en
+     *         cualquier otro caso
      */
     public Profesional buscarPorId(int id);
 
     /**
-     * Busca un registro en el repositorio en base al correo electrónico
-     * proporcionado
+     * Busca un registro en el repositorio
      * 
      * @param email correo electrónico a buscar
-     * @return objeto {@link Profesional} con el resultado, {@code null} en
+     * @return un objeto {@link Profesional} con el resultado, {@code null} en
      *         cualquier otro caso
      */
     public Profesional buscarPorEmail(String email);
 
     /**
-     * Actualiza la información de un registro dada la información proporcionada
+     * Actualiza la información de un registro en el repositorio
      * 
-     * @param profesional objeto {@link Profesional} que contiene la información a
-     *                    actualizar
+     * @param profesional objeto {@link Profesional} con la información a actualizar
      * @return {@code true} si el registro fue actualizado, {@code false} en
      *         cualquier otro caso
      */
     public boolean actualizarRegistro(Profesional profesional);
 
     /**
-     * Elimina un registro del repositorio dado el identificador proporcionado
+     * Elimina un registro del repositorio
      * 
-     * @param id identificador del registro en base de datos
+     * @param id identificador del registro
      * @return {@code true} si el registro fue eliminado, {@code false} en cualquier
      *         otro caso
      */
     public boolean eliminarRegistro(int id);
-
-    /**
-     * Busca en el repositorio todos los registros que en su {@code campo} tengan un
-     * valor igual o parecido a {@code valor}
-     * 
-     * @param campo campo sobre el cual realizar la búsqueda
-     * @param valor valor a buscar
-     * @return un objeto {@link List} con los resultados, {@code null} en cualquier
-     *         otro caso
-     */
-    public List<Profesional> buscarPor(String campo, String valor);
 
 }

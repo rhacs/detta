@@ -8,22 +8,19 @@ public class Profesional {
     /** Identificador numérico del {@link Profesional} */
     private int id;
 
-    /** Nombre del {@link Profesional} */
+    /** Nombre completo del {@link Profesional} */
     private String nombre;
 
-    /** Dirección de correo electrónico del {@link Profesional} */
+    /** Correo electrónico del {@link Profesional} */
     private String email;
-
-    /** Dirección completa del {@link Profesional} */
-    private String direccion;
 
     /** Teléfono de contacto del {@link Profesional} */
     private String telefono;
 
-    /** Estado del contrato del {@link Profesional} (vigente, terminado) */
+    /** Estado del contrato del {@link Profesional} (Vigente, Terminado) */
     private String estadoContrato;
 
-    /** Contraseña de acceso del {@link Profesional} */
+    /** Contraseña de acceso al sistema del {@link Profesional} */
     private String password;
 
     // Constructores
@@ -54,17 +51,10 @@ public class Profesional {
     }
 
     /**
-     * @return la dirección de correo electrónico
+     * @return el correo electrónico
      */
     public final String getEmail() {
         return email;
-    }
-
-    /**
-     * @return la dirección
-     */
-    public final String getDireccion() {
-        return direccion;
     }
 
     /**
@@ -100,24 +90,17 @@ public class Profesional {
     }
 
     /**
-     * @param nombre el nombre a establecer
+     * @param nombre el nombre completo a establecer
      */
     public final void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     * @param email la dirección de correo electrónico a establecer
+     * @param email el correo electrónico a establecer
      */
     public final void setEmail(String email) {
         this.email = email;
-    }
-
-    /**
-     * @param direccion la dirección a establecer
-     */
-    public final void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 
     /**
@@ -145,6 +128,9 @@ public class Profesional {
     // Herencias (Object)
     // -----------------------------------------------------------------------------------------
 
+    /**
+     * @return un código hash para este objeto
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -156,10 +142,15 @@ public class Profesional {
         return result;
     }
 
+    /**
+     * Indica si otro objeto {@code obj} es "igual a" éste
+     * 
+     * @param obj objeto con el cual hacer la comparación
+     * @return {@code true} si los dos objetos son iguales, {@code false} en
+     *         cualquier otro caso
+     */
     @Override
     public boolean equals(Object obj) {
-        Profesional other = (Profesional) obj;
-
         if (this == obj)
             return true;
 
@@ -168,6 +159,8 @@ public class Profesional {
 
         if (getClass() != obj.getClass())
             return false;
+
+        Profesional other = (Profesional) obj;
 
         if (email == null) {
             if (other.email != null)
@@ -181,10 +174,13 @@ public class Profesional {
         return true;
     }
 
+    /**
+     * @return una representación textual del objeto
+     */
     @Override
     public String toString() {
-        return "Profesional [id=" + id + ", nombre=" + nombre + ", email=" + email + ", direccion=" + direccion
-                + ", telefono=" + telefono + ", estadoContrato=" + estadoContrato + "]";
+        return "Profesional [id=" + id + ", nombre=" + nombre + ", email=" + email + ", telefono=" + telefono
+                + ", estadoContrato=" + estadoContrato + "]";
     }
 
 }
