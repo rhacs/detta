@@ -222,7 +222,7 @@ public class EmpresasRepository implements IEmpresasRepository {
                 // Definir consulta
                 String sql = "SELECT id, nombre, rut, direccion, telefono, email, giro, trabajadores, "
                         + "tipo, password, fecha_registro, fecha_actualizacion, profesional_id FROM " + TABLA
-                        + " email = ?";
+                        + " WHERE email = ?";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
