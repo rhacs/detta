@@ -138,7 +138,8 @@ public class AccidentesRepository implements IAccidentesRepository {
             try {
                 // Definir consulta
                 String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, clasificacion, "
-                        + "tipo, medio_prueba, fecha_registro, fecha_actualizacion, empresa_id FROM " + TABLA;
+                        + "tipo, medio_prueba, fecha_registro, fecha_actualizacion, empresa_id FROM " + TABLA
+                        + " ORDER BY fecha DESC";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
