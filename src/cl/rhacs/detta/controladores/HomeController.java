@@ -134,7 +134,7 @@ public class HomeController extends HttpServlet {
         } catch (NoSuchAlgorithmException e) {
             Utilidades.extraerError("HomeController", "doPost", e);
         }
-
+        
         // Buscar el usuario en los registros
         Profesional profesional = profesionalesRepository.buscarPorEmail(email);
         Empresa empresa = empresasRepository.buscarPorEmail(email);
@@ -152,7 +152,7 @@ public class HomeController extends HttpServlet {
         } else if (empresa != null) {
             comparame = empresa.getPassword();
             rol = "empresa";
-        } else if (email.equals("admin@admin")) {
+        } else if (email.equals("admin@detta.cl")) {
             comparame = "GWskgZaAUVBVVB7ptdgDV3/lAbp4FJ4vpx/ffMoeDgg=";
             rol = "admin";
         }
