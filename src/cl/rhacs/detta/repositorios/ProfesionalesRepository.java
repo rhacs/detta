@@ -83,7 +83,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
 
                 // Convertir objeto
                 Profesional profesional = (Profesional) objeto;
-                
+
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -248,7 +248,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
 
                 // Convertir objeto
                 Profesional profesional = (Profesional) objeto;
-                
+
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
 

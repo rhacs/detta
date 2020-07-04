@@ -41,7 +41,7 @@ public class AuthController extends HttpServlet {
      * @throws ServletException si una excepción interrumpe el funcionamiento normal
      *                          del {@link HttpServlet}
      * @throws IOException      si un error de entrada/salida es detectado cuando el
-     *                          {@link HttpServlet} maneja la solicitud GET
+     *                          {@link HttpServlet} maneja la solicitud
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

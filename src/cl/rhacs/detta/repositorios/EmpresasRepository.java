@@ -24,7 +24,7 @@ public class EmpresasRepository implements IEmpresasRepository {
     // -----------------------------------------------------------------------------------------
 
     /**
-     * Objeto {@link Conexion} con
+     * Objeto {@link Conexion} con los métodos de conexión a la base de datos
      */
     private Conexion conexion;
 

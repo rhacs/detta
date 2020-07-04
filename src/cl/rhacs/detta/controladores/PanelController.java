@@ -1,6 +1,10 @@
 package cl.rhacs.detta.controladores;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cl.rhacs.detta.modelos.Accidente;
 import cl.rhacs.detta.modelos.database.Conexion;
 import cl.rhacs.detta.repositorios.AccidentesRepository;
 import cl.rhacs.detta.repositorios.EmpresasRepository;
@@ -27,10 +32,13 @@ public class PanelController extends HttpServlet {
     // Atributos
     // -----------------------------------------------------------------------------------------
 
+    /** Repositorio de {@link Profesional}es */
     private ProfesionalesRepository profesionalesRepository;
 
+    /** Repositorio de {@link Empresa}s */
     private EmpresasRepository empresasRepository;
 
+    /** Repositorio de {@link Accidente}s */
     private AccidentesRepository accidentesRepository;
 
     // Constructores
@@ -79,7 +87,7 @@ public class PanelController extends HttpServlet {
      * @throws ServletException si una excepción interrumpe el funcionamiento normal
      *                          del {@link HttpServlet}
      * @throws IOException      si un error de entrada/salida es detectado cuando el
-     *                          {@link HttpServlet} maneja la solicitud GET
+     *                          {@link HttpServlet} maneja la solicitud
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -88,11 +96,43 @@ public class PanelController extends HttpServlet {
 
         // Verificar inicio de sesión
         if (sesion.getAttribute("loggedIn") != null && ((boolean) sesion.getAttribute("loggedIn"))) {
-            // Insertar título
+            // Obtener todos los accidentes
+            List<Object> accidentes = accidentesRepository.buscarTodos();
+
+            // Verificar que hayan registros
+            if (accidentes != null) {
+                // Generar listado de fechas con la cantidad de accidentes
+                Map<LocalDate, Integer> fechas = new HashMap<>();
+
+                // Rellenar el listado
+                accidentes.forEach(accidente -> {
+                    // Obtener la fecha del accidente
+                    LocalDate fecha = ((Accidente) accidente).getFecha();
+
+                    // Verificar si la fecha existe
+                    if (fechas.containsKey(fecha)) {
+                        // Sumar un accidente a la fecha
+                        fechas.computeIfPresent(fecha, (key, value) -> value + 1);
+                    } else {
+                        // Agregar fecha del accidente
+                        fechas.put(fecha, 1);
+                    }
+                });
+
+                // Agregar listado al request
+                request.setAttribute("accidentes", fechas);
+            }
+
+            // Agregar título
             request.setAttribute("titulo", "Dashboard");
+
+            // Agregar página a incluir
+            request.setAttribute("pagina", "./panel/reportes.jsp");
+
+            // Agregar página activa
             request.setAttribute("activo", "home");
 
-            // Mostrar contenido
+            // Mostrar contenido correspondiente
             request.getRequestDispatcher("WEB-INF/panel.jsp").forward(request, response);
         } else {
             // Insertar error en la sesión
