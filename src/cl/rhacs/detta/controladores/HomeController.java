@@ -30,7 +30,10 @@ public class HomeController extends HttpServlet {
     // Atributos
     // -----------------------------------------------------------------------------------------
 
+    /** Repositorio de {@link Profesional}es */
     private ProfesionalesRepository profesionalesRepository;
+
+    /** Repositorio de {@link Empresa}s */
     private EmpresasRepository empresasRepository;
 
     // Constructores
@@ -78,7 +81,7 @@ public class HomeController extends HttpServlet {
      * @throws ServletException si una excepción interrumpe el funcionamiento normal
      *                          del {@link HttpServlet}
      * @throws IOException      si un error de entrada/salida es detectado cuando el
-     *                          {@link HttpServlet} maneja la solicitud GET
+     *                          {@link HttpServlet} maneja la solicitud
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -117,7 +120,7 @@ public class HomeController extends HttpServlet {
      * @throws ServletException si una excepción interrumpe el funcionamiento normal
      *                          del {@link HttpServlet}
      * @throws IOException      si un error de entrada/salida es detectado cuando el
-     *                          {@link HttpServlet} maneja la solicitud GET
+     *                          {@link HttpServlet} maneja la solicitud
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -134,7 +137,7 @@ public class HomeController extends HttpServlet {
         } catch (NoSuchAlgorithmException e) {
             Utilidades.extraerError("HomeController", "doPost", e);
         }
-        
+
         // Buscar el usuario en los registros
         Profesional profesional = profesionalesRepository.buscarPorEmail(email);
         Empresa empresa = empresasRepository.buscarPorEmail(email);
