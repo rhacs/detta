@@ -232,6 +232,7 @@
         <!-- /Contenido -->
 
         <jsp:include page="../parciales/dependencias.jsp" />
+        <script type="text/javascript" src="<core:url value="/resources/js/panel.js" />"></script>
         <script type="text/javascript" src="<core:url value="/resources/js/profesionales.js" />"></script>
     </body>
 </html>
