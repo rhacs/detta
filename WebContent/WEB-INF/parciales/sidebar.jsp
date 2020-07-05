@@ -22,7 +22,7 @@
     
                             <core:if test="${ rol != 'empresa' }">
                             <li class="nav-item ml-2">
-                                <a class="nav-link ${ activo != null ? (activo == 'empr' ? 'active' : '') : '' }" href="<core:url value="/panel/empresas" />">
+                                <a class="nav-link ${ activo != null ? (activo == 'empr' ? 'active' : '') : '' }" href="<core:url value="/panel/clientes" />">
                                     <i class="fas fa-address-book mr-1"></i>
                                     Clientes
                                 </a>
