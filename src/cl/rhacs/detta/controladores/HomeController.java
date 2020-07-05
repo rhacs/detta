@@ -105,7 +105,7 @@ public class HomeController extends HttpServlet {
             }
 
             // Mostrar contenido correspondiente
-            request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
         }
     }
 
@@ -183,7 +183,7 @@ public class HomeController extends HttpServlet {
             request.setAttribute("email", email);
 
             // Mostrar contenido
-            request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
         }
     }
 
