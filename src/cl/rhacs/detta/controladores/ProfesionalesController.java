@@ -79,8 +79,6 @@ public class ProfesionalesController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("doGet");
-
         // Obtener objeto de sesión
         HttpSession sesion = request.getSession();
 
@@ -152,24 +150,6 @@ public class ProfesionalesController extends HttpServlet {
             // Redireccionar al usuario
             response.sendRedirect(request.getContextPath());
         }
-    }
-
-    /**
-     * Maneja las solicitudes GET al {@link HttpServlet}
-     * 
-     * @param request  un objeto {@link HttpServletRequest} que contiene la
-     *                 solicitud realizada por el cliente al {@link HttpServlet}
-     * @param response un objeto {@link HttpServletResponse} que contiene la
-     *                 respuesta que le envía el {@link HttpServlet} al cliente
-     * 
-     * @throws ServletException si una excepción interrumpe el funcionamiento normal
-     *                          del {@link HttpServlet}
-     * @throws IOException      si un error de entrada/salida es detectado cuando el
-     *                          {@link HttpServlet} maneja la solicitud
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        System.out.println("doPost");
     }
 
 }
