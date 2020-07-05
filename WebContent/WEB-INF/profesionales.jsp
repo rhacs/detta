@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.Map, java.util.LinkedHashMap, java.util.List, cl.rhacs.detta.modelos.Accidente, java.time.format.TextStyle, java.util.Locale, org.json.JSONArray" %>
 <!DOCTYPE html>
 <html lang="es">
     <jsp:include page="./parciales/header.jsp" />
@@ -13,6 +12,10 @@
                 <jsp:include page="./parciales/sidebar.jsp" />
 
                 <main class="col-md-8 ml-sm-auto col-lg-9 col-xl-10 px-md-4" role="main">
+
+                    <core:if test="${ not empty exito }">
+                    <div class="alert alert-success my-4">${ exito }</div>
+                    </core:if>
 
                     <core:if test="${ not empty error }">
                     <div class="alert alert-danger my-4">${ error }</div>

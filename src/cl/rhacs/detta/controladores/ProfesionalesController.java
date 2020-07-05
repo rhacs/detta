@@ -123,6 +123,15 @@ public class ProfesionalesController extends HttpServlet {
                     request.setAttribute("error", mensaje);
                 }
 
+                // Verificar si hay mensaje de éxito
+                if (sesion.getAttribute("exito") != null) {
+                    // Agregar mensaje a la solicitud
+                    request.setAttribute("exito", sesion.getAttribute("exito"));
+
+                    // Eliminar mensaje de la sesión
+                    sesion.removeAttribute("exito");
+                }
+
                 // Mostrar contenido
                 request.getRequestDispatcher("/WEB-INF/profesionales.jsp").forward(request, response);
             } else {
