@@ -151,12 +151,12 @@ public class PanelController extends HttpServlet {
             }
 
             // Verificar si hay errores en sesión
-            if (sesion.getAttribute("notEnoughPower") != null) {
+            if (sesion.getAttribute("youShallNotPass") != null) {
                 // Recuperar error
-                String mensaje = (String) sesion.getAttribute("notEnoughPower");
+                String mensaje = (String) sesion.getAttribute("youShallNotPass");
 
                 // Quitar error de la sesión
-                sesion.removeAttribute("notEnoughPower");
+                sesion.removeAttribute("youShallNotPass");
 
                 // Insertar error en la solicitud
                 request.setAttribute("error", mensaje);
@@ -165,14 +165,11 @@ public class PanelController extends HttpServlet {
             // Agregar título
             request.setAttribute("titulo", "Dashboard");
 
-            // Agregar página a incluir
-            request.setAttribute("pagina", "./panel/reportes.jsp");
-
             // Agregar página activa
             request.setAttribute("activo", "home");
 
             // Mostrar contenido correspondiente
-            request.getRequestDispatcher("WEB-INF/panel.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/panel.jsp").forward(request, response);
         } else {
             // Insertar error en la sesión
             sesion.setAttribute("loginError", "Debe iniciar sesión para poder acceder al panel");
