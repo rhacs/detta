@@ -60,14 +60,6 @@
     
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">Cuenta</h6>
                         <ul class="nav flex-column mb-2">
-                            <core:if test="${ rol ne 'admin' }">
-                            <li class="nav-item ml-2">
-                                <a class="nav-link ${ activo != null ? (activo == 'perf' ? 'active' : '') : '' }" href="<core:url value="/panel/perfil" />">
-                                    <i class="far fa-user-circle mr-1"></i>
-                                    Mi Perfil
-                                </a>
-                            </li>
-                            </core:if>
                             <li class="nav-item ml-2">
                                 <a class="nav-link" href="<core:url value="/auth/logout" />">
                                     <i class="fas fa-sign-out-alt mr-1"></i>
