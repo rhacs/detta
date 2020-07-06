@@ -352,7 +352,7 @@ public class EmpresasRepository implements IEmpresasRepository {
             try {
                 // Definir consulta
                 String sql = "UPDATE " + TABLA + " SET nombre = ?, rut = ?, direccion = ?, telefono = ?, "
-                        + "email = ?, giro = ?, trabajadores = ?, tipo = ?, password = ?, fecha_actualizar = "
+                        + "email = ?, giro = ?, trabajadores = ?, tipo = ?, password = ?, fecha_actualizacion = "
                         + "CURRENT_TIMESTAMP, profesional_id = ? WHERE id = ?";
 
                 // Convertir objeto
