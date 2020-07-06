@@ -429,8 +429,20 @@ public class ClientesAccionesController extends HttpServlet {
                     e.printStackTrace();
                 }
 
-                // Convertir identificador
-                int id = Integer.parseInt(profesionalId);
+                // Obtener rol del usuario
+                String rol = (String) sesion.getAttribute("rol");
+
+                // Crear identificador
+                int id = -1;
+
+                // Verificar identificador
+                if (rol.equals("profesional")) {
+                    // Obtener id del profesional
+                    id = (int) sesion.getAttribute("uid");
+                } else {
+                    // Convertir identificador
+                    id = Integer.parseInt(profesionalId);
+                }
 
                 // Establecer relación con el profesional
                 empresa.setProfesionalId(id);
