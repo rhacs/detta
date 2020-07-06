@@ -140,7 +140,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Definir consulta
                 String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, clasificacion, "
                         + "tipo, medio_prueba, fecha_registro, fecha_actualizacion, empresa_id FROM " + TABLA
-                        + " ORDER BY fecha DESC";
+                        + " ORDER BY fecha DESC, hora DESC";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -227,7 +227,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Definir consulta
                 String sql = "SELECT id, fecha, hora, direccion, lugar, circunstancia, detalles, clasificacion, "
                         + "tipo, medio_prueba, fecha_registro, fecha_actualizacion, empresa_id FROM " + TABLA
-                        + " WHERE empresa_id = ?";
+                        + " WHERE empresa_id = ? ORDER BY fecha DESC, hora DESC";
 
                 // Preparar consulta
                 PreparedStatement ps = con.prepareStatement(sql);
