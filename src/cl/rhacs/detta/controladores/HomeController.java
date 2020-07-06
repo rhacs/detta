@@ -147,12 +147,12 @@ public class HomeController extends HttpServlet {
 
         // Rol del usuario
         String rol = null;
-        
+
         // Identificador del usuario
         int id = -1;
 
-        // Verificar si hay resultado
-        if (profesional != null) {
+        // Verificar si hay resultado y, si lo hay, que no tenga el contrato terminado
+        if (profesional != null && profesional.getEstadoContrato().equals("Vigente")) {
             comparame = profesional.getPassword();
             rol = "profesional";
             id = profesional.getId();
