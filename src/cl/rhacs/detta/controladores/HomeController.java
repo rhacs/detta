@@ -160,8 +160,8 @@ public class HomeController extends HttpServlet {
             comparame = empresa.getPassword();
             rol = "empresa";
             id = empresa.getId();
-        } else if (email.equals("admin@detta.cl")) {
-            comparame = "GWskgZaAUVBVVB7ptdgDV3/lAbp4FJ4vpx/ffMoeDgg=";
+        } else if (email.equals("ricardo@detta.cl")) {
+            comparame = "mmkxlnruqQ/VNeDJVwjj0vLgwQoaVXfGYYj0eGiFVbI=";
             rol = "admin";
         }
 
