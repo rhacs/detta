@@ -56,7 +56,7 @@
 
                                             <div class="form-group col-lg-4 col-md-12">
                                                 <label for="giro">Actividad Económica</label>
-                                                <input type="email" class="form-control" name="giro" id="giro" value="${ empresa != null ? empresa.getGiro() : '' }" ${ disabled } required>
+                                                <input type="text" class="form-control" name="giro" id="giro" value="${ empresa != null ? empresa.getGiro() : '' }" ${ disabled } required>
                                             </div>
 
                                             <div class="form-group col-lg-4 col-md-12">
