@@ -462,7 +462,13 @@ public class AccidentesController extends HttpServlet {
             if (aux != null) {
                 // Faltantes
                 accidente.setId(aux.getId());
-                accidente.setEmpresaId(aux.getEmpresaId());
+
+                // Verificar identificador de la empresa
+                if (empresa != null) {
+                    accidente.setEmpresaId(Integer.parseInt(empresa));
+                } else {
+                    accidente.setEmpresaId(aux.getEmpresaId());
+                }
 
                 // Actualizar registro
                 boolean actualizado = accidentesRepository.actualizarRegistro(accidente);

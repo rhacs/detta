@@ -403,7 +403,13 @@ public class ClientesAccionesController extends HttpServlet {
                     // Reemplazar campos
                     empresa.setId(aux.getId());
                     empresa.setPassword(aux.getPassword());
-                    empresa.setProfesionalId(aux.getProfesionalId());
+
+                    // Verificar id del profesional
+                    if(profesionalId != null) {
+                        empresa.setProfesionalId(Integer.parseInt(profesionalId));
+                    } else {
+                        empresa.setProfesionalId(aux.getProfesionalId());
+                    }
 
                     // Actualizar registro
                     boolean actualizado = empresasRepository.actualizarRegistro(empresa);
