@@ -104,6 +104,40 @@ public class AccidentesController extends HttpServlet {
                 // Agregar atributos a la solicitud
                 request.setAttribute("ver", true);
 
+                // Obtener rol del usuario
+                String rol = (String) sesion.getAttribute("rol");
+
+                // Verificar rol
+                if (rol.equals("admin")) {
+                    // Buscar todas las empresas
+                    List<Object> aux = empresasRepository.buscarTodos();
+
+                    // Verificar resultados
+                    if (aux != null) {
+                        // Convertir objetos
+                        List<Empresa> empresas = new ArrayList<>();
+
+                        for (Object o : aux) {
+                            empresas.add((Empresa) o);
+                        }
+
+                        // Agregar listado a la solicitud
+                        request.setAttribute("empresas", empresas);
+                    }
+                } else if (rol.equals("profesional")) {
+                    // Buscar id del profesional
+                    int profid = (int) sesion.getAttribute("uid");
+
+                    // Buscar las empresas del profesional
+                    List<Empresa> empresas = empresasRepository.buscarPorProfesionalId(profid);
+
+                    // Verificar resultados
+                    if (empresas != null) {
+                        // Agregar listado a la solicitud
+                        request.setAttribute("empresas", empresas);
+                    }
+                }
+
                 // Mostrar contenido
                 request.getRequestDispatcher("/WEB-INF/paneles/accidentes.detalles.jsp").forward(request, response);
             } else {
@@ -171,6 +205,40 @@ public class AccidentesController extends HttpServlet {
             throws IOException, ServletException {
         // Obtener uri
         String uri = request.getRequestURI();
+
+        // Obtener rol del usuario
+        String rol = (String) sesion.getAttribute("rol");
+
+        // Verificar rol
+        if (rol.equals("admin")) {
+            // Buscar todas las empresas
+            List<Object> aux = empresasRepository.buscarTodos();
+
+            // Verificar resultados
+            if (aux != null) {
+                // Convertir objetos
+                List<Empresa> empresas = new ArrayList<>();
+
+                for (Object o : aux) {
+                    empresas.add((Empresa) o);
+                }
+
+                // Agregar listado a la solicitud
+                request.setAttribute("empresas", empresas);
+            }
+        } else if (rol.equals("profesional")) {
+            // Buscar id del profesional
+            int profid = (int) sesion.getAttribute("uid");
+
+            // Buscar las empresas del profesional
+            List<Empresa> empresas = empresasRepository.buscarPorProfesionalId(profid);
+
+            // Verificar resultados
+            if (empresas != null) {
+                // Agregar listado a la solicitud
+                request.setAttribute("empresas", empresas);
+            }
+        }
 
         // Verificar acción
         if (uri.contains("agregar")) {
@@ -366,6 +434,7 @@ public class AccidentesController extends HttpServlet {
         String clasificacion = request.getParameter("clasificacion");
         String tipo = request.getParameter("tipo");
         String medioPrueba = request.getParameter("medioPrueba");
+        String empresa = request.getParameter("empresa");
 
         // Crear Accidente
         Accidente accidente = new Accidente();
@@ -412,11 +481,11 @@ public class AccidentesController extends HttpServlet {
                 }
             }
         } else {
-            // Recuperar id del usuario
-            int uid = (int) sesion.getAttribute("uid");
+            // Convertir identificador
+            int id = Integer.parseInt(empresa);
 
             // Insertar identificador
-            accidente.setEmpresaId(uid);
+            accidente.setEmpresaId(id);
 
             // Agregar registro
             boolean agregado = accidentesRepository.agregarRegistro(accidente);

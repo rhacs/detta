@@ -89,6 +89,17 @@
                                             </div>
                                         </div>
 
+                                        <core:if test="${ empresas != null && empresas.size() > 0 }">
+                                        <div class="form-group">
+                                            <label for="empresa">Empresa</label>
+                                            <select class="form-control" name="empresa" id="empresa" ${ disable } required>
+                                                <core:forEach items="${ empresas }" var="empresa">
+                                                <option value="${ empresa.getId() }" ${ accidente.getEmpresaId() == empresa.getId() ? 'selected' : '' }>${ empresa.getNombre() }</option>
+                                                </core:forEach>
+                                            </select>
+                                        </div>
+                                        </core:if>
+
                                         <div class="form-group text-right mt-4">
                                             <core:choose>
                                                 <core:when test="${ not empty ver }">
