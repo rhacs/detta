@@ -243,6 +243,13 @@ public class CapacitacionesController extends HttpServlet {
                 // Convertir ocurrencia
                 int id = Integer.parseInt(matcher.group());
 
+                // Verificar acción
+                if (uri.contains("agregar")) {
+                    request.setAttribute("accion", "Agregar");
+                } else {
+                    request.setAttribute("accion", "Editar");
+                }
+
                 // Buscar capacitación
                 Capacitacion capacitacion = (Capacitacion) capacitacionesRepository.buscarPorId(id);
 
@@ -275,6 +282,9 @@ public class CapacitacionesController extends HttpServlet {
 
                             // Convertir objetos
                             aux.forEach(o -> empresas.add((Empresa) o));
+
+                            // Agregar a la solicitud
+                            request.setAttribute("empresas", empresas);
                         }
                     } else if (rol.equals("profesional")) {
                         // Obtener identificador
