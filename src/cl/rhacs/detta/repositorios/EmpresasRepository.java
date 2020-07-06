@@ -91,8 +91,8 @@ public class EmpresasRepository implements IEmpresasRepository {
             try {
                 // Definir consulta
                 String sql = "INSERT INTO " + TABLA + " (nombre, rut, direccion, telefono, email, "
-                        + "giro, trabajadores, tipo, password, fecha_registro, fecha_actualizacion, "
-                        + "profesional_id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)";
+                        + "giro, trabajadores, tipo, password, profesional_id) VALUES (?, ?, ?, ?, "
+                        + "?, ?, ?, ?, ?, ?)";
 
                 // Convertir objeto
                 Empresa empresa = (Empresa) objeto;
@@ -111,6 +111,9 @@ public class EmpresasRepository implements IEmpresasRepository {
                 ps.setString(8, empresa.getTipo());
                 ps.setString(9, empresa.getPassword());
                 ps.setInt(10, empresa.getProfesionalId());
+                
+                // Ejecutar consulta
+                registroAgregado = ps.executeUpdate() > 0;
             } catch (SQLException e) {
                 Utilidades.extraerError("EmpresasRepository", "agregarRegistro", e);
             } finally {
