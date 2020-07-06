@@ -20,7 +20,7 @@
                                 <div class="card-header">Pefil</div>
                                 <div class="card-body">
                                     <form method="post" action="${ pageContext.request.contextPath }/panel/profesionales/">
-                                        <input type="hidden" value="${ profesional != null ? profesional.getId() : '' }">
+                                        <input type="hidden" name="id" id="id" value="${ profesional != null ? profesional.getId() : '' }">
 
                                         <div class="form-row">
                                             <div class="form-group col-lg-6 col-md-12">
