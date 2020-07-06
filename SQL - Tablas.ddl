@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 20.2.0.167.1538
---   en:        2020-07-06 12:56:19 CLT
+--   en:        2020-07-06 13:00:00 CLT
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -20,8 +20,8 @@ CREATE TABLE detta_accidentes (
     clasificacion        VARCHAR2(10 CHAR) NOT NULL,
     tipo                 VARCHAR2(10 CHAR) NOT NULL,
     medio_prueba         VARCHAR2(25 CHAR) NOT NULL,
-    fecha_registro       TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL,
-    fecha_actualizacion  TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL,
+    fecha_registro       TIMESTAMP DEFAULT current_timestamp NOT NULL,
+    fecha_actualizacion  TIMESTAMP DEFAULT current_timestamp NOT NULL,
     empresa_id           NUMBER NOT NULL
 );
 
@@ -51,8 +51,8 @@ CREATE TABLE detta_empresas (
     trabajadores         NUMBER NOT NULL,
     tipo                 VARCHAR2(35 CHAR) NOT NULL,
     password             VARCHAR2(250 CHAR) NOT NULL,
-    fecha_registro       TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL,
-    fecha_actualizacion  TIMESTAMP WITH LOCAL TIME ZONE DEFAULT current_timestamp NOT NULL,
+    fecha_registro       TIMESTAMP DEFAULT current_timestamp NOT NULL,
+    fecha_actualizacion  TIMESTAMP DEFAULT current_timestamp NOT NULL,
     profesional_id       NUMBER NOT NULL
 );
 
