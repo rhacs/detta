@@ -258,7 +258,7 @@ public class ProfesionalesRepository implements IProfesionalesRepository {
                 ps.setString(3, profesional.getTelefono());
                 ps.setString(4, profesional.getEstadoContrato());
                 ps.setString(5, profesional.getPassword());
-                ps.setInt(1, profesional.getId());
+                ps.setInt(6, profesional.getId());
 
                 // Ejecutar consulta
                 registroActualizado = ps.executeUpdate() > 0;
