@@ -216,27 +216,27 @@ public class ClientesAccionesController extends HttpServlet {
                 // Agregar atributos a la solicitud
                 request.setAttribute("accion", "Editar");
             }
+        }
 
-            // Obtener rol del usuario
-            String rol = (String) sesion.getAttribute("rol");
+        // Obtener rol del usuario
+        String rol = (String) sesion.getAttribute("rol");
 
-            // Verificar rol
-            if (rol.equals("admin")) {
-                // Buscar todos los profesionales
-                List<Object> aux = profesionalesRepository.buscarTodos();
+        // Verificar rol
+        if (rol.equals("admin")) {
+            // Buscar todos los profesionales
+            List<Object> aux = profesionalesRepository.buscarTodos();
 
-                // Verificar si hay resultados
-                if (aux != null) {
-                    // Convertir objetos
-                    List<Profesional> profesionales = new ArrayList<>();
+            // Verificar si hay resultados
+            if (aux != null) {
+                // Convertir objetos
+                List<Profesional> profesionales = new ArrayList<>();
 
-                    for (Object o : aux) {
-                        profesionales.add((Profesional) o);
-                    }
-
-                    // Agregar listado a la solicitud
-                    request.setAttribute("profesionales", profesionales);
+                for (Object o : aux) {
+                    profesionales.add((Profesional) o);
                 }
+
+                // Agregar listado a la solicitud
+                request.setAttribute("profesionales", profesionales);
             }
         }
 
