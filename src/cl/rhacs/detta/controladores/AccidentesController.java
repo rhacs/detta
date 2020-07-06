@@ -481,8 +481,20 @@ public class AccidentesController extends HttpServlet {
                 }
             }
         } else {
-            // Convertir identificador
-            int id = Integer.parseInt(empresa);
+            // Obtener rol del usuario
+            String rol = (String) sesion.getAttribute("rol");
+
+            // Crear identificador
+            int id = -1;
+
+            // Verificar rol
+            if (rol.equals("empresa")) {
+                // Obtener identificador del usuario
+                id = (int) sesion.getAttribute("uid");
+            } else {
+                // Convertir identificador
+                id = Integer.parseInt(empresa);
+            }
 
             // Insertar identificador
             accidente.setEmpresaId(id);
