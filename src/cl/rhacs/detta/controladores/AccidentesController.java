@@ -80,6 +80,21 @@ public class AccidentesController extends HttpServlet {
         empresasRepository = new EmpresasRepository(conexion);
     }
 
+    /**
+     * Maneja las solicitudes de mostrar detalles de un {@link Accidente} que se le
+     * hacen al {@link HttpServlet}
+     * 
+     * @param request  objeto {@link HttpServletRequest} con la información de la
+     *                 solicitud que le hace el cliente al {@link HttpServlet}
+     * @param response objeto {@link HttpServletResponse} con la información de
+     *                 respuesta que le envía el {@link HttpServlet} al cliente
+     * @param sesion   objeto {@link HttpSession} con la información de la sesión
+     * @throws IOException      cuando ocurre un error de entrada/salida mientras el
+     *                          {@link HttpServlet} intenta procesar la
+     *                          solicitud/respuesta
+     * @throws ServletException cuando un error interrumpe el normal funcionamiento
+     *                          del {@link HttpServlet}
+     */
     private void doVer(HttpServletRequest request, HttpServletResponse response, HttpSession sesion)
             throws IOException, ServletException {
         // Obtener uri
@@ -157,6 +172,19 @@ public class AccidentesController extends HttpServlet {
         }
     }
 
+    /**
+     * Maneja las solicitudes de eliminar un {@link Accidente} que se le hacen al
+     * {@link HttpServlet}
+     * 
+     * @param request  objeto {@link HttpServletRequest} con la información de la
+     *                 solicitud que le hace el cliente al {@link HttpServlet}
+     * @param response objeto {@link HttpServletResponse} con la información de
+     *                 respuesta que le envía el {@link HttpServlet} al cliente
+     * @param sesion   objeto {@link HttpSession} con la información de la sesión
+     * @throws IOException cuando ocurre un error de entrada/salida mientras el
+     *                     {@link HttpServlet} intenta procesar la
+     *                     solicitud/respuesta
+     */
     private void doEliminar(HttpServletRequest request, HttpServletResponse response, HttpSession sesion)
             throws IOException {
         // Obtener uri
@@ -201,6 +229,21 @@ public class AccidentesController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/panel/accidentes");
     }
 
+    /**
+     * Maneja las solicitudes de agregar y editar un {@link Accidente} que se le
+     * hacen al {@link HttpServlet}
+     * 
+     * @param request  objeto {@link HttpServletRequest} con la información de la
+     *                 solicitud que le hace el cliente al {@link HttpServlet}
+     * @param response objeto {@link HttpServletResponse} con la información de
+     *                 respuesta que le envía el {@link HttpServlet} al cliente
+     * @param sesion   objeto {@link HttpSession} con la información de la sesión
+     * @throws IOException      cuando ocurre un error de entrada/salida mientras el
+     *                          {@link HttpServlet} intenta procesar la
+     *                          solicitud/respuesta
+     * @throws ServletException cuando un error interrumpe el normal funcionamiento
+     *                          del {@link HttpServlet}
+     */
     private void doAgregarEditar(HttpServletRequest request, HttpServletResponse response, HttpSession sesion)
             throws IOException, ServletException {
         // Obtener uri
