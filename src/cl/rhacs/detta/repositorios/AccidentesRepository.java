@@ -68,6 +68,7 @@ public class AccidentesRepository implements IAccidentesRepository {
             accidente.setMedioPrueba(rs.getString("medio_prueba"));
             accidente.setFechaRegistro(rs.getTimestamp("fecha_registro").toLocalDateTime());
             accidente.setFechaActualizacion(rs.getTimestamp("fecha_actualizacion").toLocalDateTime());
+            accidente.setEmpresaId(rs.getInt("empresa_id"));
         } catch (SQLException e) {
             Utilidades.extraerError("AccidentesRepository", "extraerAccidente", e);
         }
@@ -92,7 +93,7 @@ public class AccidentesRepository implements IAccidentesRepository {
                 // Definir consulta
                 String sql = "INSERT INTO " + TABLA + " (fecha, hora, direccion, lugar, circunstancia, "
                         + "detalles, clasificacion, tipo, medio_prueba, fecha_registro, fecha_actualizacion, "
-                        + "empresa_id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)";
+                        + "empresa_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?)";
 
                 // Convertir objeto
                 Accidente accidente = (Accidente) objeto;
