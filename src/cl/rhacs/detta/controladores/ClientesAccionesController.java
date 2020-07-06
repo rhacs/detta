@@ -350,9 +350,6 @@ public class ClientesAccionesController extends HttpServlet {
 
                     // Verificar actualización
                     if (actualizado) {
-                        // Agregar mensaje
-                        sesion.setAttribute("exito", "El registro ha sido actualizado satisfactoriamente");
-
                         // Redireccionar
                         response.sendRedirect(request.getContextPath() + "/panel/clientes/ver/" + aux.getId());
                     } else {
