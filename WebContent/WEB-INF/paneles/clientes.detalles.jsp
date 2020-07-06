@@ -75,6 +75,17 @@
                                             </select>
                                         </div>
 
+                                        <core:if test="${ profesionales != null && profesionales.size() > 0 }">
+                                        <div class="form-group">
+                                            <label for="profesional">Profesional a cargo</label>
+                                            <select name="profesional" id="profesional" class="form-control" ${ disabled }>
+                                                <core:forEach items="${ profesionales }" var="profesional">
+                                                <option value="${ profesional.getId() }" ${ empresa.getProfesionalId() == profesional.getId() ? 'selected' : '' }>${ profesional.getNombre() }</option>
+                                                </core:forEach>
+                                            </select>
+                                        </div>
+                                        </core:if>
+
                                         <div class="form-group text-right">
                                             <core:choose>
                                                 <core:when test="${ not empty ver }">

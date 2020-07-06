@@ -2,6 +2,7 @@ package cl.rhacs.detta.controladores;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,9 +18,11 @@ import javax.servlet.http.HttpSession;
 import cl.rhacs.detta.Utilidades;
 import cl.rhacs.detta.modelos.Accidente;
 import cl.rhacs.detta.modelos.Empresa;
+import cl.rhacs.detta.modelos.Profesional;
 import cl.rhacs.detta.modelos.database.Conexion;
 import cl.rhacs.detta.repositorios.AccidentesRepository;
 import cl.rhacs.detta.repositorios.EmpresasRepository;
+import cl.rhacs.detta.repositorios.ProfesionalesRepository;
 
 /**
  * Servlet implementation class ClientesAccionesController
@@ -36,11 +39,22 @@ public class ClientesAccionesController extends HttpServlet {
     // Atributos
     // -----------------------------------------------------------------------------------------
 
-    /** Objeto {@link EmpresasRepository} con los métodos CRUD */
+    /**
+     * Objeto {@link EmpresasRepository} con los métodos CRUD para {@link Empresa}s
+     */
     private EmpresasRepository empresasRepository;
 
-    /** Objeto {@link AccidentesRepository} con los métodos CRUD */
+    /**
+     * Objeto {@link AccidentesRepository} con los métodos CRUD para
+     * {@link Accidente}s
+     */
     private AccidentesRepository accidentesRepository;
+
+    /**
+     * Objeto {@link ProfesionalesRepository} con los métodos CRUD para
+     * {@link Profesional}es
+     */
+    private ProfesionalesRepository profesionalesRepository;
 
     // Constructores
     // -----------------------------------------------------------------------------------------
@@ -71,6 +85,7 @@ public class ClientesAccionesController extends HttpServlet {
         // Inicializar repositorios
         empresasRepository = new EmpresasRepository(conexion);
         accidentesRepository = new AccidentesRepository(conexion);
+        profesionalesRepository = new ProfesionalesRepository(conexion);
     }
 
     /**
@@ -106,6 +121,28 @@ public class ClientesAccionesController extends HttpServlet {
 
             // Verificar existencia
             if (empresa != null) {
+                // Obtener rol del usuario
+                String rol = (String) sesion.getAttribute("rol");
+
+                // Verificar rol
+                if (rol.equals("admin")) {
+                    // Buscar todos los profesionales
+                    List<Object> aux = profesionalesRepository.buscarTodos();
+
+                    // Verificar si hay resultados
+                    if (aux != null) {
+                        // Convertir objetos
+                        List<Profesional> profesionales = new ArrayList<>();
+
+                        for (Object o : aux) {
+                            profesionales.add((Profesional) o);
+                        }
+
+                        // Agregar listado a la solicitud
+                        request.setAttribute("profesionales", profesionales);
+                    }
+                }
+
                 // Buscar accidentes
                 List<Accidente> accidentes = accidentesRepository.buscarPorEmpresaId(id);
 
@@ -178,6 +215,28 @@ public class ClientesAccionesController extends HttpServlet {
 
                 // Agregar atributos a la solicitud
                 request.setAttribute("accion", "Editar");
+            }
+
+            // Obtener rol del usuario
+            String rol = (String) sesion.getAttribute("rol");
+
+            // Verificar rol
+            if (rol.equals("admin")) {
+                // Buscar todos los profesionales
+                List<Object> aux = profesionalesRepository.buscarTodos();
+
+                // Verificar si hay resultados
+                if (aux != null) {
+                    // Convertir objetos
+                    List<Profesional> profesionales = new ArrayList<>();
+
+                    for (Object o : aux) {
+                        profesionales.add((Profesional) o);
+                    }
+
+                    // Agregar listado a la solicitud
+                    request.setAttribute("profesionales", profesionales);
+                }
             }
         }
 
@@ -317,6 +376,7 @@ public class ClientesAccionesController extends HttpServlet {
             String giro = request.getParameter("giro");
             String trabajadores = request.getParameter("trabajadores");
             String tipo = request.getParameter("tipo");
+            String profesionalId = request.getParameter("profesional");
 
             // Crear empresa
             Empresa empresa = new Empresa();
@@ -369,8 +429,8 @@ public class ClientesAccionesController extends HttpServlet {
                     e.printStackTrace();
                 }
 
-                // Obtener id del usuario conectado
-                int id = (int) sesion.getAttribute("uid");
+                // Convertir identificador
+                int id = Integer.parseInt(profesionalId);
 
                 // Establecer relación con el profesional
                 empresa.setProfesionalId(id);
