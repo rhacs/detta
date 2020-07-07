@@ -24,11 +24,13 @@
 
                     <h3 class="border-bottom pt-3 pb-2 mb-3">Listado de Clientes</h3>
 
+                    <core:if test="${ rol != 'empresa' }">
                     <div class="row mb-3">
                         <div class="col-12 text-right">
                             <button type="button" data-agregar class="btn btn-primary">Agregar Capacitación</button>
                         </div>
                     </div>
+                    </core:if>
 
                     <div class="table-responsive-md">
                         <table class="table table-striped table-hover">
@@ -52,7 +54,7 @@
                                 </core:when>
                                 <core:otherwise>
                                     <core:forEach items="${ capacitaciones }" var="capacitacion">
-                                    <tr role="button" data-clienteid="${ capacitacion.getId() }">
+                                    <tr role="button" data-capid="${ capacitacion.getId() }">
                                         <th scope="row">${ capacitacion.getId() }</th>
                                         <td>${ capacitacion.getFecha() }</td>
                                         <td>${ capacitacion.getParticipantes() }</td>
