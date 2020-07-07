@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"cl.rhacs.detta"},{"l":"cl.rhacs.detta.controladores"},{"l":"cl.rhacs.detta.modelos"},{"l":"cl.rhacs.detta.modelos.database"},{"l":"cl.rhacs.detta.repositorios"},{"l":"cl.rhacs.detta.repositorios.interfaces"}]

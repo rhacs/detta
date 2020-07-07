@@ -1,0 +1,6 @@
+cl.rhacs.detta
+cl.rhacs.detta.controladores
+cl.rhacs.detta.modelos
+cl.rhacs.detta.modelos.database
+cl.rhacs.detta.repositorios
+cl.rhacs.detta.repositorios.interfaces
