@@ -24,6 +24,7 @@
                                 <div class="card-header">Detalles</div>
                                 <div class="card-body">
                                     <form action="${ pageContext.request.contextPath }/panel/capacitaciones/" method="post">
+                                        <input type="hidden" name="id" id="id" value="${ capacitacion != null ? capacitacion.getId() : '' }">
                                         <div class="form-row">
                                             <div class="form-group col-lg-2 col-md-4 col-sm-12">
                                                 <label for="fecha">Fecha</label>
@@ -99,8 +100,8 @@
                                         <div class="form-group text-right">
                                         <core:choose>
                                             <core:when test="${ not empty ver }">
-                                                <button type="button" class="btn btn-primary" data-accion="editar" data-id="${ capacitacion.getId() }">Editar</button>
                                                 <core:if test="${ rol != 'empresa' }">
+                                                <button type="button" class="btn btn-primary" data-accion="editar" data-id="${ capacitacion.getId() }">Editar</button>
                                                 <button type="button" class="btn btn-danger ml-2" data-accion="eliminar" data-id="${ capacitacion.getId() }">Eliminar</button>
                                                 </core:if>
                                             </core:when>
