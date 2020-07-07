@@ -56,17 +56,26 @@
                                         <th scope="row">${ capacitacion.getId() }</th>
                                         <td>${ capacitacion.getFecha() }</td>
                                         <td>${ capacitacion.getParticipantes() }</td>
+                                        <td>${ capacitacion.getTema() }</td>
                                         <core:if test="${ rol != 'profesional' }">
                                             <td>
+                                                <core:set var="containsProfesional" value="false" />
                                                 <core:forEach items="${ profesionales }" var="profesional">
-                                                    <core:if test="${ profesional.getId() == capacitacion.getProfesionalId() }">${ profesional.getNombre() }</core:if>
+                                                    <core:if test="${ profesional.getId() == capacitacion.getProfesionalId() && not containsProfesional }">
+                                                        ${ profesional.getNombre() }
+                                                        <core:set var="containsProfesional" value="true" />
+                                                    </core:if>
                                                 </core:forEach>
                                             </td>
                                         </core:if>
                                         <core:if test="${ rol != 'empresa' }">
                                         <td>
+                                            <core:set var="containsEmpresa" value="false" />
                                             <core:forEach items="${ empresas }" var="empresa">
-                                                <core:if test="${ empresa.getId() == capacitacion.getEmpresaId() }">${ empresa.getNombre() }</core:if>
+                                                <core:if test="${ empresa.getId() == capacitacion.getEmpresaId() && not containsEmpresa }">
+                                                    ${ empresa.getNombre() }
+                                                    <core:set var="containsEmpresa" value="true" />
+                                                </core:if>
                                             </core:forEach>
                                         </td>
                                         </core:if>
