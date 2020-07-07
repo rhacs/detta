@@ -379,11 +379,26 @@ public class CapacitacionesController extends HttpServlet {
                         for (Object o : aux) {
                             capacitaciones.add((Capacitacion) o);
                         }
+
+                        // Agregar listado al request
+                        request.setAttribute("capacitaciones", capacitaciones);
                     }
                 } else if (rol.equals("profesional")) {
+                    // Buscar capacitaciones
+                    List<Capacitacion> aux = capacitacionesRepository
+                            .buscarPorProfesionalId((int) sesion.getAttribute("uid"));
 
+                    if (aux != null) {
+                        capacitaciones = aux;
+                    }
                 } else if (rol.equals("empresa")) {
+                    // Buscar capacitaciones
+                    List<Capacitacion> aux = capacitacionesRepository
+                            .buscarPorEmpresaId((int) sesion.getAttribute("uid"));
 
+                    if (aux != null) {
+                        capacitaciones = aux;
+                    }
                 }
 
                 // Crear listados
