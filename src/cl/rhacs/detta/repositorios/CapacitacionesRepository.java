@@ -161,7 +161,7 @@ public class CapacitacionesRepository implements ICapacitacionesRepository {
         if (con != null) {
             try {
                 // Definir consulta
-                String sql = "SELECT id, fecha, direccion, tema, participaciones, realizada, profesional_id, "
+                String sql = "SELECT id, fecha, direccion, tema, participantes, realizada, profesional_id, "
                         + "empresa_id FROM " + TABLA + " WHERE id = ?";
 
                 // Preparar consulta
