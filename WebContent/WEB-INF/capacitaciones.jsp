@@ -22,7 +22,7 @@
                     <div class="alert alert-danger my-4">${ error }</div>
                     </core:if>
 
-                    <h3 class="border-bottom pt-3 pb-2 mb-3">Listado de Clientes</h3>
+                    <h3 class="border-bottom pt-3 pb-2 mb-3">Listado de Capacitaciones</h3>
 
                     <core:if test="${ rol != 'empresa' }">
                     <div class="row mb-3">
@@ -47,7 +47,7 @@
                             </thead>
                             <tbody>
                             <core:choose>
-                                <core:when test="${ empresas == null || empresas.size() == 0 }">
+                                <core:when test="${ capacitaciones == null || capacitaciones.size() == 0 }">
                                 <tr>
                                     <th scope="row" colspan="6" class="text-center">No hay registros</th>
                                 </tr>
