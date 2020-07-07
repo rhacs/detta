@@ -1,8 +1,8 @@
-<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+
         <!-- Navegación -->
         <nav class="navbar navbar-expand-md sticky-top navbar-dark bg-info shadow">
             <!-- "Logo" -->
-            <a class="navbar-brand" href="<core:url value="." />">
+            <a class="navbar-brand" href="${ pageContext.request.contextPath }">
                 <i class="fas fa-crutch mr-1"></i>
                 detta
             </a>
