@@ -116,6 +116,51 @@ public class CapacitacionesController extends HttpServlet {
 
             // Verificar existencia
             if (capacitacion != null) {
+                // Obtener rol
+                String rol = (String) sesion.getAttribute("rol");
+
+                // Verificar rol
+                if (rol.equals("admin")) {
+                    // Buscar profesionales
+                    List<Object> aux = profesionalesRepository.buscarTodos();
+
+                    // Verificar resultados
+                    if (aux != null) {
+                        // Crear listado
+                        List<Profesional> profesionales = new ArrayList<>();
+
+                        // Convertir objetos
+                        aux.forEach(pro -> profesionales.add((Profesional) pro));
+
+                        // Agregar al request
+                        request.setAttribute("profesionales", profesionales);
+                    }
+
+                    // Buscar empresas
+                    aux = empresasRepository.buscarTodos();
+
+                    // Verificar resultados
+                    if (aux != null) {
+                        // Crear listado
+                        List<Empresa> empresas = new ArrayList<>();
+
+                        // Convertir objetos
+                        aux.forEach(empresa -> empresas.add((Empresa) empresa));
+
+                        // Agregar al request
+                        request.setAttribute("empresas", empresas);
+                    }
+                } else if (rol.equals("profesional")) {
+                    // Buscar empresas
+                    List<Empresa> aux = empresasRepository.buscarPorProfesionalId((int) sesion.getAttribute("uid"));
+
+                    // Verificar resultados
+                    if (aux != null) {
+                        // Agregar al request
+                        request.setAttribute("empresas", aux);
+                    }
+                }
+
                 // Buscar profesional
                 Profesional profesional = profesionalesRepository.buscarPorId(capacitacion.getProfesionalId());
 
@@ -123,6 +168,7 @@ public class CapacitacionesController extends HttpServlet {
                 Empresa empresa = (Empresa) empresasRepository.buscarPorId(capacitacion.getEmpresaId());
 
                 // Agregar elementos a la solicitud
+                request.setAttribute("capacitacion", capacitacion);
                 request.setAttribute("profesional", profesional);
                 request.setAttribute("empresa", empresa);
                 request.setAttribute("ver", true);
@@ -243,13 +289,6 @@ public class CapacitacionesController extends HttpServlet {
                 // Convertir ocurrencia
                 int id = Integer.parseInt(matcher.group());
 
-                // Verificar acción
-                if (uri.contains("agregar")) {
-                    request.setAttribute("accion", "Agregar");
-                } else {
-                    request.setAttribute("accion", "Editar");
-                }
-
                 // Buscar capacitación
                 Capacitacion capacitacion = (Capacitacion) capacitacionesRepository.buscarPorId(id);
 
@@ -303,6 +342,8 @@ public class CapacitacionesController extends HttpServlet {
                     // Agregar capacitacion al request
                     request.setAttribute("capacitacion", capacitacion);
 
+                    request.setAttribute("accion", "Editar");
+
                     // Mostrar contenido
                     request.getRequestDispatcher("/WEB-INF/paneles/capacitaciones.detalles.jsp").forward(request,
                             response);
@@ -314,6 +355,55 @@ public class CapacitacionesController extends HttpServlet {
                     // Redireccionar
                     response.sendRedirect(request.getContextPath() + "/panel/capacitaciones");
                 }
+            } else {
+                // Buscar profesionales
+                List<Object> aux = profesionalesRepository.buscarTodos();
+
+                // Verificar resultados
+                if (aux != null) {
+                    // Crear lista
+                    List<Profesional> profesionales = new ArrayList<>();
+
+                    // Convertir objetos
+                    aux.forEach(pro -> profesionales.add((Profesional) pro));
+
+                    // Agregar al request
+                    request.setAttribute("profesionales", profesionales);
+                }
+
+                // Buscar empresas
+                if (rol.equals("admin")) {
+                    // Buscar todas las empresas
+                    aux = empresasRepository.buscarTodos();
+
+                    // Verificar resultados
+                    if (aux != null) {
+                        // Crear lista
+                        List<Empresa> empresas = new ArrayList<>();
+
+                        // Convertir objetos
+                        aux.forEach(emp -> empresas.add((Empresa) emp));
+
+                        // Agregar al request
+                        request.setAttribute("empresas", empresas);
+                    }
+                } else if (rol.equals("profesional")) {
+                    // Buscar empresas a cargo del profesional
+                    List<Empresa> empresas = empresasRepository
+                            .buscarPorProfesionalId((int) sesion.getAttribute("uid"));
+
+                    // Verificar si hay resultados
+                    if (empresas != null) {
+                        // Agregar al request
+                        request.setAttribute("empresas", empresas);
+                    }
+                }
+
+                // Agregar atributos al request
+                request.setAttribute("accion", "Agregar");
+
+                // Mostrar contenido
+                request.getRequestDispatcher("/WEB-INF/paneles/capacitaciones.detalles.jsp").forward(request, response);
             }
         } else {
             // Agregar error
@@ -379,9 +469,6 @@ public class CapacitacionesController extends HttpServlet {
                         for (Object o : aux) {
                             capacitaciones.add((Capacitacion) o);
                         }
-
-                        // Agregar listado al request
-                        request.setAttribute("capacitaciones", capacitaciones);
                     }
                 } else if (rol.equals("profesional")) {
                     // Buscar capacitaciones
@@ -447,6 +534,7 @@ public class CapacitacionesController extends HttpServlet {
                 // Agregar listados a la solicitud
                 request.setAttribute("profesionales", profesionales);
                 request.setAttribute("empresas", empresas);
+                request.setAttribute("capacitaciones", capacitaciones);
 
                 // Mostrar contenido
                 request.getRequestDispatcher("/WEB-INF/capacitaciones.jsp").forward(request, response);
@@ -505,7 +593,7 @@ public class CapacitacionesController extends HttpServlet {
                 capacitacion.setEmpresaId(Integer.parseInt(auxEmpresa));
 
                 // Verificar si el identificador está presente
-                if (auxId != null) {
+                if (auxId != null && !auxId.isBlank()) {
                     // Convertir identificador
                     int id = Integer.parseInt(auxId);
 
